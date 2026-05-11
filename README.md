@@ -69,7 +69,7 @@ El proyecto ha sido desarrollado como Trabajo Fin de Grado (TFG) del ciclo Desar
 
 ### Dashboard
 
-(Añadir captura)
+![(Añadir captura)](capturas/dashboard.png)
 
 ### Gestión de incidencias
 
