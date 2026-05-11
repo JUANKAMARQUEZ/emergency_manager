@@ -77,7 +77,7 @@ El proyecto ha sido desarrollado como Trabajo Fin de Grado (TFG) del ciclo Desar
 
 ### Mapa interactivo
 
-(Añadir captura)
+![(Añadir captura)](capturas/Mapa.png)
 
 ---
 
