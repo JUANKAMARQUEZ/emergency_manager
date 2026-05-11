@@ -1,6 +1,6 @@
 class Config:
 
-    SECRET_KEY = "clave_super_secreta"
+    SECRET_KEY = "Kj82nX!pQw93Lm#Tz71AaBcD"
 
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@localhost/emergency_db"
 
