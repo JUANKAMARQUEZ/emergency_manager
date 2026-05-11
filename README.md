@@ -79,6 +79,14 @@ El proyecto ha sido desarrollado como Trabajo Fin de Grado (TFG) del ciclo Desar
 
 ![(Añadir captura)](capturas/Mapa.png)
 
+### Gestión de suarios
+
+![(Añadir captura)](capturas/Usuarios.png)
+
+### Mapa interactivo
+
+![(añadir captura)](<capturas/Gestión incidencia.png>)
+
 ---
 
 ## ⚙️ Instalación
