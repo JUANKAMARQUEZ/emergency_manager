@@ -73,7 +73,7 @@ El proyecto ha sido desarrollado como Trabajo Fin de Grado (TFG) del ciclo Desar
 
 ### Gestión de incidencias
 
-(Añadir captura)
+![(Añadir captura)](capturas/Incidencias.png)
 
 ### Mapa interactivo
 
