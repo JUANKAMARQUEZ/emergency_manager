@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Gestionar incidencia{% endblock %}
+
+{% block extra_head %}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+{% endblock %}
+
+{% block content %}
+
+<h2>Gestionar incidencia</h2>
+
+<p><b>Dirección:</b> {{ incident.address }}</p>
+<p><b>Descripción:</b> {{ incident.incidence }}</p>
+<p><b>Tipo:</b> {{ incident.incident_type.name }}</p>
+<p><b>Fecha inicio:</b> {{ incident.start_date }}</p>
+
+{% if incident.end_date %}
+<p><b>Fecha fin:</b> {{ incident.end_date }}</p>
+{% endif %}
+
+<p><b>Estado:</b>
+{% if incident.end_date %}
+<span class="badge bg-success">Finalizada</span>
+{% else %}
+<span class="badge bg-danger">Activa</span>
+{% endif %}
+</p>
+<p><b>Recurso asignado:</b> 
+{% if incident.resource %}
+<span class="badge bg-primary">{{ incident.resource.name }}</span>
+{% else %}
+<span class="badge bg-secondary">Sin asignar</span>
+{% endif %}
+</p>
+
+<div id="map" style="height:300px;"></div>
+
+<form method="POST">
+<div class="mb-3">
+  <label for="resource" class="form-label"><b>Recurso:</b></label>
+  
+  <select name="resource" id="resource" class="form-control">
+    <option value="">-- Sin asignar --</option>
+    {% for r in resources %}
+    <option value="{{ r.id }}"
+      {% if incident.resource_id == r.id %}selected{% endif %}>
+      {{ r.name }}
+    </option>
+    {% endfor %}
+  </select>
+</div>
+
+<div class="mb-3">
+  <label for="observations" class="form-label"><b>Resolución:</b></label>
+  <textarea id="observations" name="observations" class="form-control"  placeholder="Escribe la resolución..."></textarea>
+</div>
+
+<button type="submit" name="action" value="save" class="btn btn-primary mt-3">
+Guardar cambios
+</button>
+
+<button type="submit" name="action" value="finish" class="btn btn-success mt-3">
+Finalizar incidencia
+</button>
+
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+var map = L.map('map').setView(
+[parseFloat("{{ incident.latitude }}"), parseFloat("{{ incident.longitude }}")], 
+16
+);
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+L.marker([
+parseFloat("{{ incident.latitude }}"),
+parseFloat("{{ incident.longitude }}")
+]).addTo(map);
+
+</script>
+
+{% endblock %}

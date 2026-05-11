@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Incidencias{% endblock %}
+
+{% block content %}
+
+<h2>Incidencias</h2>
+
+<!-- BOTÓN CREAR -->
+<a href="/incidents/create" class="btn btn-success mb-3">
+Crear nueva incidencia
+</a>
+
+<!-- FILTROS -->
+<div class="mb-3">
+<button id="btnTodas" class="btn btn-primary me-2" onclick="filtrar('todas')">Todas</button>
+<button id="btnActivas" class="btn btn-outline-danger me-2" onclick="filtrar('activa')">Activas</button>
+<button id="btnFinalizadas" class="btn btn-outline-success me-2" onclick="filtrar('finalizada')">Finalizadas</button>
+</div>
+
+<table class="table table-striped">
+
+<tr>
+<th>ID</th>
+<th>Dirección</th>
+<th>Tipo</th>
+<th>Descripción</th>
+<th>Recurso</th>
+<th>Inicio</th>
+<th>Fin</th>
+<th>Estado</th>
+<th>Acciones</th>
+</tr>
+
+{% for incident in incidents %}
+<tr data-estado="{{ 'activa' if not incident.end_date else 'finalizada' }}">
+
+<td>{{ incident.id }}</td>
+<td>{{ incident.address }}</td>
+<td>{{ incident.incident_type.name }}</td>
+<td title="{{ incident.incidence }}">{{ incident.incidence[:30] }}{% if incident.incidence|length > 30 %}...{% endif %}</td>
+<td>{{ incident.resource.name if incident.resource else 'Sin asignar' }}</td>
+<td>{{ incident.start_date }}</td>
+<td>{{ incident.end_date if incident.end_date else '-' }}</td>
+
+<td>
+{% if incident.end_date %}
+<span class="badge bg-success">Finalizada</span>
+{% else %}
+<span class="badge bg-danger">Activa</span>
+{% endif %}
+</td>
+
+<td>
+
+{% if not incident.end_date %}
+
+<a href="/incidents/manage/{{ incident.id }}" class="btn btn-warning btn-sm">
+Gestionar
+</a>
+
+{% else %}
+
+<a href="/incidents/view/{{ incident.id }}" class="btn btn-info btn-sm">
+Ver
+</a>
+
+{% endif %}
+
+</td>
+
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+function filtrar(tipo){
+
+var filas = document.querySelectorAll("tr[data-estado]");
+
+// 🔄 Reset botones
+document.getElementById("btnTodas").className = "btn btn-outline-primary me-2";
+document.getElementById("btnActivas").className = "btn btn-outline-danger me-2";
+document.getElementById("btnFinalizadas").className = "btn btn-outline-success me-2";
+
+// 🎯 Activar botón seleccionado
+if(tipo === "todas"){
+document.getElementById("btnTodas").className = "btn btn-primary me-2";
+}
+else if(tipo === "activa"){
+document.getElementById("btnActivas").className = "btn btn-danger me-2";
+}
+else if(tipo === "finalizada"){
+document.getElementById("btnFinalizadas").className = "btn btn-success me-2";
+}
+
+// 🔎 Filtrar filas
+filas.forEach(function(fila){
+
+if(tipo === "todas"){
+fila.style.display = "";
+}
+else if(fila.dataset.estado === tipo){
+fila.style.display = "";
+}
+else{
+fila.style.display = "none";
+}
+
+});
+
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+filtrar('todas');
+});
+
+</script>
+
+
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Dashboard</h2>
+
+<div class="row">
+
+<div class="col-md-4">
+<div class="card text-center">
+<div class="card-body">
+<h5>Total Incidencias</h5>
+<h2>{{ total }}</h2>
+</div>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card text-center">
+<div class="card-body">
+<h5>Incidencias Activas</h5>
+<h2>{{ active }}</h2>
+</div>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card text-center">
+<div class="card-body">
+<h5>Incidencias Finalizadas</h5>
+<h2>{{ closed }}</h2>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="mt-4">
+
+<a href="/incidents/create" class="btn btn-success">
+Crear nueva incidencia
+</a>
+
+<a href="/incidents" class="btn btn-secondary">
+Ver incidencias
+</a>
+
+<a href="/map" class="btn btn-primary">
+Ver mapa de incidencias
+</a>
+
+</div>
+
+{% endblock %}

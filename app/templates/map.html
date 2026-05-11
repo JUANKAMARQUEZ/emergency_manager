@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Mapa de incidencias{% endblock %}
+
+{% block extra_head %}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+{% endblock %}
+
+{% block content %}
+
+<h2>Mapa de incidencias</h2>
+
+<div class="mb-3">
+
+<label><b>Estado</b></label><br>
+
+<input type="checkbox" id="filterActive" checked> Activas
+<input type="checkbox" id="filterClosed" checked> Finalizadas
+
+<br><br>
+
+<label><b>Tipo</b></label><br>
+
+<input type="checkbox" class="filterType" value="Incendio" checked> Incendio
+<input type="checkbox" class="filterType" value="Asistencia Sanitaria" checked> Sanitaria
+<input type="checkbox" class="filterType" value="Incidencia de Tráfico" checked> Tráfico
+<input type="checkbox" class="filterType" value="Seguridad Ciudadana" checked> Seguridad
+<input type="checkbox" class="filterType" value="Otros" checked> Otros
+
+</div>
+
+<div id="map" style="height:600px;"></div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script id="incidents-data" type="application/json">
+{{ incidents | tojson }}
+</script>
+
+<script>
+
+var map = L.map('map').setView([37.3886, -5.9823], 13);
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+maxZoom: 19
+}).addTo(map);
+
+var redIcon = L.icon({
+iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+iconSize: [25,41],
+iconAnchor: [12,41]
+});
+
+var greenIcon = L.icon({
+iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
+shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+iconSize: [25,41],
+iconAnchor: [12,41]
+});
+
+var incidents = JSON.parse(
+document.getElementById("incidents-data").textContent
+);
+
+var markers = [];
+
+function drawIncidents(){
+
+markers.forEach(m => map.removeLayer(m));
+markers = [];
+
+var showActive = document.getElementById("filterActive").checked;
+var showClosed = document.getElementById("filterClosed").checked;
+
+var typesChecked = [];
+document.querySelectorAll(".filterType:checked").forEach(el => {
+typesChecked.push(el.value.toLowerCase());
+});
+
+incidents.forEach(function(incident){
+
+if(!incident.latitude || !incident.longitude) return;
+
+if(incident.status === "activa" && !showActive) return;
+if(incident.status === "finalizada" && !showClosed) return;
+
+var match = typesChecked.some(t => 
+incident.type.toLowerCase().includes(t)
+);
+
+if(!match) return;
+
+var icon = incident.status === "activa" ? redIcon : greenIcon;
+
+var marker = L.marker(
+[parseFloat(incident.latitude), parseFloat(incident.longitude)],
+{icon: icon}
+).addTo(map);
+
+marker.bindPopup(
+"<b>" + incident.address + "</b><br>" +
+"<b>Tipo:</b> " + incident.type + "<br>" +
+"<b>Descripción:</b> " + incident.incidence + "<br>" +
+"<b>Recurso:</b> " + incident.resource + "<br>" +
+"<b>Resolución:</b> " + incident.resolution + "<br>" +
+"<b>Estado:</b> " + incident.status
+);
+
+markers.push(marker);
+
+});
+
+}
+
+drawIncidents();
+
+document.querySelectorAll("input").forEach(el => {
+el.addEventListener("change", drawIncidents);
+});
+
+</script>
+
+{% endblock %}

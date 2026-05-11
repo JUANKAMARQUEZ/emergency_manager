@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Nueva incidencia{% endblock %}
+
+{% block extra_head %}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+{% endblock %}
+
+{% block content %}
+
+<h2>Nueva incidencia</h2>
+
+<form method="POST">
+
+<input type="text" id="address" name="address" class="form-control" placeholder="Dirección" required>
+
+<button type="button" onclick="buscarDireccion()" class="btn btn-secondary mt-2">
+Buscar en mapa
+</button>
+
+<input type="hidden" name="latitude" id="latitude">
+<input type="hidden" name="longitude" id="longitude">
+
+<div id="map" style="height:400px;" class="mt-3"></div>
+
+<select name="incident_type" class="form-control mt-3">
+{% for type in types %}
+<option value="{{ type.id }}">{{ type.name }}</option>
+{% endfor %}
+</select>
+
+<textarea name="incidence" class="form-control mt-3" placeholder="Descripción"></textarea>
+
+<button class="btn btn-primary mt-3">Guardar</button>
+
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+// 📍 Inicializar mapa en Sevilla
+var map = L.map('map').setView([37.3886, -5.9823], 13);
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+maxZoom: 19
+}).addTo(map);
+
+var marker;
+
+
+// 🔎 Buscar dirección
+function buscarDireccion(){
+
+var address = document.getElementById("address").value;
+
+// Limitar a Sevilla
+var url = "https://nominatim.openstreetmap.org/search?format=json&q=" 
+          + address + ", Sevilla, España";
+
+fetch(url)
+.then(response => response.json())
+.then(data => {
+
+if(data.length > 0){
+
+var lat = data[0].lat;
+var lon = data[0].lon;
+
+// Mover mapa
+map.setView([lat, lon], 16);
+
+// Crear marcador
+if(marker){
+map.removeLayer(marker);
+}
+
+marker = L.marker([lat, lon]).addTo(map);
+
+// Guardar coordenadas
+document.getElementById("latitude").value = lat;
+document.getElementById("longitude").value = lon;
+
+}
+else{
+alert("Dirección no encontrada");
+}
+
+});
+
+}
+
+</script>
+
+{% endblock %}

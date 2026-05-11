@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Ver incidencia{% endblock %}
+
+{% block extra_head %}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+{% endblock %}
+
+{% block content %}
+
+<h2>Detalle de incidencia</h2>
+
+<p><b>Dirección:</b> {{ incident.address }}</p>
+
+<p><b>Descripción:</b> {{ incident.incidence }}</p>
+
+<p><b>Tipo:</b> {{ incident.incident_type.name }}</p>
+
+<p><b>Estado:</b>
+{% if incident.end_date %}
+<span class="badge bg-success">Finalizada</span>
+{% else %}
+<span class="badge bg-danger">Activa</span>
+{% endif %}
+</p>
+
+<p><b>Recurso:</b>
+{% if incident.resource %}
+<span class="badge bg-primary">{{ incident.resource.name }}</span>
+{% else %}
+<span class="badge bg-secondary">Sin asignar</span>
+{% endif %}
+</p>
+
+<p><b>Fecha inicio:</b>
+{{ incident.start_date.strftime('%d/%m/%Y %H:%M') }}
+</p>
+
+{% if incident.end_date %}
+<p><b>Fecha fin:</b>
+{{ incident.end_date.strftime('%d/%m/%Y %H:%M') }}
+</p>
+
+<p><b>Duración:</b> {{ duration }}</p>
+
+</p>
+{% endif %}
+
+<p><b>Resolución:</b>
+{{ incident.observations if incident.observations else "Sin resolución" }}
+</p>
+
+<hr>
+
+<h5 class="mt-4">Ubicación de la incidencia</h5>
+
+<div id="map" style="height:300px;" class="mt-3"></div>
+
+<a href="/incidents" class="btn btn-secondary mt-4">
+Volver
+</a>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+var map = L.map('map').setView(
+[parseFloat("{{ incident.latitude }}"), parseFloat("{{ incident.longitude }}")], 
+16
+);
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+var marker = L.marker([
+parseFloat("{{ incident.latitude }}"),
+parseFloat("{{ incident.longitude }}")
+]).addTo(map);
+
+// Popup con info
+marker.bindPopup(
+"<b>{{ incident.address }}</b><br>{{ incident.incidence }}"
+);
+
+</script>
+
+{% endblock %}

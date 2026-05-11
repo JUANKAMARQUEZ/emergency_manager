@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Usuarios{% endblock %}
+
+{% block content %}
+
+<h2>Usuarios</h2>
+
+<a href="/users/create" class="btn btn-success mb-3">
+Nuevo usuario
+</a>
+
+<table class="table table-striped">
+
+<tr>
+<th>ID</th>
+<th>Nombre</th>
+<th>Email</th>
+<th>Rol</th>
+<th>Acciones</th>
+</tr>
+
+{% for user in users %}
+
+<tr>
+<td>{{ user.id }}</td>
+<td>{{ user.name }}</td>
+<td>{{ user.email }}</td>
+<td>{{ user.role.name }}</td>
+
+<td>
+<a href="/users/edit/{{ user.id }}" class="btn btn-warning btn-sm">
+Editar
+</a>
+
+<a href="/users/delete/{{ user.id }}"
+class="btn btn-danger btn-sm"
+onclick="return confirm('¿Seguro que quieres eliminar este usuario?')">
+Eliminar
+</a>
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

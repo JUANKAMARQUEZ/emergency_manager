@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>{% block title %}Gestor de Emergencias{% endblock %}</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+{% block extra_head %}{% endblock %}
+
+</head>
+
+<body class="bg-light">
+
+{% if current_user.is_authenticated %}
+
+<nav class="navbar navbar-dark bg-dark">
+
+<div class="container">
+
+<span class="navbar-brand">Gestor de Emergencias</span>
+
+<div class="d-flex align-items-center">
+
+<a href="/dashboard" class="btn btn-light me-2">Dashboard</a>
+<a href="/incidents" class="btn btn-light me-2">Incidencias</a>
+<a href="/map" class="btn btn-primary me-2">Mapa</a>
+
+{% if current_user.is_authenticated %}
+<span class="text-white me-3">
+{{ current_user.name }}
+</span>
+{% endif %}
+
+<a href="/profile" class="btn btn-light me-2">Perfil</a>
+
+{% if current_user.is_authenticated and current_user.role.name == "administrador" %}
+<a href="/users" class="btn btn-warning me-2">Usuarios</a>
+{% endif %}
+
+<a href="/logout" class="btn btn-danger">Cerrar sesión</a>
+
+</div>
+
+</div>
+
+</nav>
+
+{% endif %}
+
+<div class="container mt-4">
+
+<!-- 🔔 MENSAJES FLASH -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<!-- CONTENIDO DE CADA PÁGINA -->
+{% block content %}{% endblock %}
+
+</div>
+
+{% block scripts %}{% endblock %}
+
+</body>
+</html>
