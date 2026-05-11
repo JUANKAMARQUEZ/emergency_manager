@@ -83,7 +83,7 @@ El proyecto ha sido desarrollado como Trabajo Fin de Grado (TFG) del ciclo Desar
 
 ![(Añadir captura)](capturas/Usuarios.png)
 
-### Mapa interactivo
+### Gestionar incidencia
 
 ![(añadir captura)](<capturas/Gestión incidencia.png>)
 
