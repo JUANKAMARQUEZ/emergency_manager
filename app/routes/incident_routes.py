@@ -20,7 +20,9 @@ def dashboard():
 
     active = Incident.query.filter_by(end_date=None).count()
 
-    closed = Incident.query.filter(Incident.end_date != None).count()
+    closed = Incident.query.filter(
+        Incident.end_date.is_not(None)
+    ).count()
 
     return render_template(
         "dashboard.html",
@@ -157,14 +159,14 @@ def manage_incident(id):
                 return redirect(request.url)
 
         if resource_id:
-             incident.resource_id = resource_id
+            incident.resource_id = resource_id
         else:
             incident.resource_id = None
 
-         # ✔ guardar observaciones SIEMPRE
-        incident.observations = request.form["observations"]
+        # ✔ guardar observaciones SIEMPRE
+        incident.observations = request.form.get("observations")
 
-         # ✔ finalizar incidencia
+        # ✔ finalizar incidencia
         if action == "finish":
 
           if not incident.observations:
