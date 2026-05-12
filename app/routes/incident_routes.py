@@ -100,8 +100,8 @@ def manage_incident(id):
     # -------------------------------
 
     busy_resources = db.session.query(Incident.resource_id)\
-        .filter(Incident.end_date == None)\
-        .filter(Incident.resource_id != None)\
+        .filter(Incident.end_date.is_(None))\
+        .filter(Incident.resource_id.is_not(None))\
         .all()
 
     busy_ids = [r[0] for r in busy_resources]
