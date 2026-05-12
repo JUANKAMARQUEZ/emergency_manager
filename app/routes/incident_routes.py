@@ -122,7 +122,7 @@ def manage_incident(id):
 
         action = request.form.get("action")
 
-         # ✔ asignar / quitar recurso
+        # ✔ asignar / quitar recurso
         resource_id = request.form.get("resource")
 
         if resource_id:
@@ -230,7 +230,7 @@ def map_incidents():
 @login_required
 def view_incident(id):
 
-    incident = Incident.query.get(id)
+    incident = Incident.query.get_or_404(id)
 
     duration = None
 
