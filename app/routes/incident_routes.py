@@ -92,7 +92,8 @@ def create_incident():
 @login_required
 def manage_incident(id):
 
-    incident = Incident.query.get(id)
+    # Obtener incidencia o devolver error 404
+    incident = Incident.query.get_or_404(id)
 
     # -------------------------------
     # RECURSOS DISPONIBLES
@@ -107,7 +108,7 @@ def manage_incident(id):
 
     resources = Resource.query.filter(~Resource.id.in_(busy_ids)).all()
 
-    # Añadir el recurso actual
+    # Añadir el recurso actual aunque esté ocupado
     if incident.resource_id:
         current_resource = Resource.query.get(incident.resource_id)
         if current_resource not in resources:
@@ -123,6 +124,37 @@ def manage_incident(id):
 
          # ✔ asignar / quitar recurso
         resource_id = request.form.get("resource")
+
+        if resource_id:
+
+            resource = Resource.query.get(resource_id)
+
+            if not resource:
+
+                flash(
+                    "El recurso no existe",
+                    "danger"
+                 )
+
+                return redirect(request.url)
+
+        # 🔒 validar recurso ocupado
+        if resource_id:
+
+            busy_incident = Incident.query.filter(
+                Incident.resource_id == resource_id,
+                Incident.end_date.is_(None),
+                Incident.id != incident.id
+            ).first()
+
+            if busy_incident:
+
+                flash(
+                    "Ese recurso ya está asignado a otra incidencia activa",
+                    "danger"
+                 )
+
+                return redirect(request.url)
 
         if resource_id:
              incident.resource_id = resource_id
