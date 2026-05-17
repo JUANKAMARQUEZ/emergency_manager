@@ -11,57 +11,204 @@
 
 {% block content %}
 
-<h2>Detalle de incidencia</h2>
+<div class="form-card">
 
-<p><b>Dirección:</b> {{ incident.address }}</p>
+    <!-- CABECERA -->
 
-<p><b>Descripción:</b> {{ incident.incidence }}</p>
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-<p><b>Tipo:</b> {{ incident.incident_type.name }}</p>
+        <div>
 
-<p><b>Estado:</b>
-{% if incident.end_date %}
-<span class="badge bg-success">Finalizada</span>
-{% else %}
-<span class="badge bg-danger">Activa</span>
-{% endif %}
-</p>
+            <h2 class="form-title mb-1">
 
-<p><b>Recurso:</b>
-{% if incident.resource %}
-<span class="badge bg-primary">{{ incident.resource.name }}</span>
-{% else %}
-<span class="badge bg-secondary">Sin asignar</span>
-{% endif %}
-</p>
+                <i class="bi bi-file-earmark-text me-2 text-primary"></i>
 
-<p><b>Fecha inicio:</b>
-{{ incident.start_date.strftime('%d/%m/%Y %H:%M') }}
-</p>
+                Detalle de incidencia
 
-{% if incident.end_date %}
-<p><b>Fecha fin:</b>
-{{ incident.end_date.strftime('%d/%m/%Y %H:%M') }}
-</p>
+            </h2>
 
-<p><b>Duración:</b> {{ duration }}</p>
+            <p class="text-muted mb-0">
+                Información completa de la incidencia
+            </p>
 
-</p>
-{% endif %}
+        </div>
 
-<p><b>Resolución:</b>
-{{ incident.observations if incident.observations else "Sin resolución" }}
-</p>
+        {% if incident.end_date %}
 
-<hr>
+        <span class="badge bg-success fs-6">
+            Finalizada
+        </span>
 
-<h5 class="mt-4">Ubicación de la incidencia</h5>
+        {% else %}
 
-<div id="map" style="height:300px;" class="mt-3"></div>
+        <span class="badge bg-danger fs-6">
+            Activa
+        </span>
 
-<a href="/incidents" class="btn btn-secondary mt-4">
-Volver
-</a>
+        {% endif %}
+
+    </div>
+
+    <!-- INFORMACIÓN -->
+
+    <div class="incident-info-grid">
+
+        <div class="incident-info-card">
+
+            <span class="info-label">
+                Dirección
+            </span>
+
+            <span class="info-value">
+                {{ incident.address }}
+            </span>
+
+        </div>
+
+        <div class="incident-info-card">
+
+            <span class="info-label">
+                Tipo
+            </span>
+
+            <span class="info-value">
+                {{ incident.incident_type.name }}
+            </span>
+
+        </div>
+
+        <div class="incident-info-card">
+
+            <span class="info-label">
+                Fecha inicio
+            </span>
+
+            <span class="info-value">
+                {{ incident.start_date.strftime('%d/%m/%Y %H:%M') }}
+            </span>
+
+        </div>
+
+        {% if incident.end_date %}
+
+        <div class="incident-info-card">
+
+            <span class="info-label">
+                Fecha fin
+            </span>
+
+            <span class="info-value">
+                {{ incident.end_date.strftime('%d/%m/%Y %H:%M') }}
+            </span>
+
+        </div>
+
+        {% endif %}
+
+        <div class="incident-info-card">
+
+            <span class="info-label">
+                Recurso
+            </span>
+
+            <span class="info-value">
+
+                {% if incident.resource %}
+                    {{ incident.resource.name }}
+                {% else %}
+                    Sin asignar
+                {% endif %}
+
+            </span>
+
+        </div>
+
+        {% if duration %}
+
+        <div class="incident-info-card">
+
+            <span class="info-label">
+                Duración
+            </span>
+
+            <span class="info-value">
+                {{ duration }}
+            </span>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    <!-- DESCRIPCIÓN -->
+
+    <div class="incident-description-card mb-4">
+
+        <h5 class="mb-3">
+
+            <i class="bi bi-exclamation-octagon me-2"></i>
+
+            Descripción
+
+        </h5>
+
+        <p class="mb-0">
+            {{ incident.incidence }}
+        </p>
+
+    </div>
+
+    <!-- RESOLUCIÓN -->
+
+    <div class="incident-description-card mb-4">
+
+        <h5 class="mb-3">
+
+            <i class="bi bi-check-circle me-2"></i>
+
+            Resolución
+
+        </h5>
+
+        <p class="mb-0">
+
+            {{ incident.observations if incident.observations else "Sin resolución" }}
+
+        </p>
+
+    </div>
+
+    <!-- MAPA -->
+
+    <h5 class="mb-3">
+
+        <i class="bi bi-geo-alt me-2"></i>
+
+        Ubicación de la incidencia
+
+    </h5>
+
+    <div
+        id="map"
+        class="modern-map mb-4"
+    ></div>
+
+    <!-- BOTONES -->
+
+    <div class="form-actions">
+
+        <a href="/incidents" class="btn custom-btn">
+
+            <i class="bi bi-arrow-left me-2"></i>
+
+            Volver
+
+        </a>
+
+    </div>
+
+</div>
 
 {% endblock %}
 

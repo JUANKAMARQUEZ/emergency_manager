@@ -11,32 +11,127 @@
 
 {% block content %}
 
-<h2>Nueva incidencia</h2>
+<div class="form-card">
 
-<form method="POST">
+    <h2 class="form-title d-flex align-items-center gap-3">
 
-<input type="text" id="address" name="address" class="form-control" placeholder="Dirección" required>
+        <i class="bi bi-plus-circle-fill text-primary"></i>
 
-<button type="button" onclick="buscarDireccion()" class="btn btn-secondary mt-2">
-Buscar en mapa
-</button>
+        Nueva incidencia
 
-<input type="hidden" name="latitude" id="latitude">
-<input type="hidden" name="longitude" id="longitude">
+    </h2>
 
-<div id="map" style="height:400px;" class="mt-3"></div>
+    <form method="POST">
 
-<select name="incident_type" class="form-control mt-3">
-{% for type in types %}
-<option value="{{ type.id }}">{{ type.name }}</option>
-{% endfor %}
-</select>
+        <!-- DIRECCIÓN -->
 
-<textarea name="incidence" class="form-control mt-3" placeholder="Descripción"></textarea>
+        <div class="mb-4">
 
-<button class="btn btn-primary mt-3">Guardar</button>
+            <label class="form-label">
+                Dirección
+            </label>
 
-</form>
+            <input
+                type="text"
+                id="address"
+                name="address"
+                class="form-control modern-input"
+                placeholder="Introduce una dirección..."
+                required
+            >
+
+        </div>
+
+        <!-- BOTÓN MAPA -->
+
+        <button
+            type="button"
+            onclick="buscarDireccion()"
+            class="btn custom-btn mb-4"
+        >
+
+            <i class="bi bi-search me-2"></i>
+
+            Buscar en mapa
+
+        </button>
+
+        <!-- COORDENADAS -->
+
+        <input type="hidden" name="latitude" id="latitude">
+        <input type="hidden" name="longitude" id="longitude">
+
+        <!-- MAPA -->
+
+        <div
+            id="map"
+            class="modern-map mb-4"
+        ></div>
+
+        <!-- TIPO -->
+
+        <div class="mb-4">
+
+            <label class="form-label">
+                Tipo de incidencia
+            </label>
+
+            <select
+                name="incident_type"
+                class="form-select modern-select"
+            >
+
+                {% for type in types %}
+
+                <option value="{{ type.id }}">
+                    {{ type.name }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <!-- DESCRIPCIÓN -->
+
+        <div class="mb-4">
+
+            <label class="form-label">
+                Descripción
+            </label>
+
+            <textarea
+                name="incidence"
+                class="form-control modern-textarea"
+                placeholder="Describe la incidencia..."
+            ></textarea>
+
+        </div>
+
+        <!-- BOTONES -->
+
+        <div class="form-actions">
+
+            <button class="btn custom-btn">
+
+                <i class="bi bi-check-circle me-2"></i>
+
+                Guardar incidencia
+
+            </button>
+
+            <a href="/incidents" class="btn nav-btn text-dark border">
+
+                Cancelar
+
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
 
 {% endblock %}
 

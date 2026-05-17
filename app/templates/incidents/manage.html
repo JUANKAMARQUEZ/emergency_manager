@@ -11,63 +11,210 @@
 
 {% block content %}
 
-<h2>Gestionar incidencia</h2>
+<div class="form-card">
 
-<p><b>Dirección:</b> {{ incident.address }}</p>
-<p><b>Descripción:</b> {{ incident.incidence }}</p>
-<p><b>Tipo:</b> {{ incident.incident_type.name }}</p>
-<p><b>Fecha inicio:</b> {{ incident.start_date }}</p>
+    <!-- TÍTULO -->
 
-{% if incident.end_date %}
-<p><b>Fecha fin:</b> {{ incident.end_date }}</p>
-{% endif %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-<p><b>Estado:</b>
-{% if incident.end_date %}
-<span class="badge bg-success">Finalizada</span>
-{% else %}
-<span class="badge bg-danger">Activa</span>
-{% endif %}
-</p>
-<p><b>Recurso asignado:</b> 
-{% if incident.resource %}
-<span class="badge bg-primary">{{ incident.resource.name }}</span>
-{% else %}
-<span class="badge bg-secondary">Sin asignar</span>
-{% endif %}
-</p>
+        <h2 class="form-title mb-0 d-flex align-items-center gap-3">
 
-<div id="map" style="height:300px;"></div>
+            <i class="bi bi-tools text-primary"></i>
 
-<form method="POST">
-<div class="mb-3">
-  <label for="resource" class="form-label"><b>Recurso:</b></label>
-  
-  <select name="resource" id="resource" class="form-control">
-    <option value="">-- Sin asignar --</option>
-    {% for r in resources %}
-    <option value="{{ r.id }}"
-      {% if incident.resource_id == r.id %}selected{% endif %}>
-      {{ r.name }}
-    </option>
-    {% endfor %}
-  </select>
+            Gestionar incidencia
+
+        </h2>
+
+        {% if incident.end_date %}
+
+        <span class="badge bg-success fs-6">
+            Finalizada
+        </span>
+
+        {% else %}
+
+        <span class="badge bg-danger fs-6">
+            Activa
+        </span>
+
+        {% endif %}
+
+    </div>
+
+    <!-- INFORMACIÓN -->
+
+    <div class="incident-info-grid">
+
+        <div class="incident-info-card">
+
+            <span class="info-label">
+                Dirección
+            </span>
+
+            <span class="info-value">
+                {{ incident.address }}
+            </span>
+
+        </div>
+
+        <div class="incident-info-card">
+
+            <span class="info-label">
+                Tipo
+            </span>
+
+            <span class="info-value">
+                {{ incident.incident_type.name }}
+            </span>
+
+        </div>
+
+        <div class="incident-info-card">
+
+            <span class="info-label">
+                Fecha inicio
+            </span>
+
+            <span class="info-value">
+                {{ incident.start_date }}
+            </span>
+
+        </div>
+
+        <div class="incident-info-card">
+
+            <span class="info-label">
+                Recurso asignado
+            </span>
+
+            <span class="info-value">
+
+                {% if incident.resource %}
+                    {{ incident.resource.name }}
+                {% else %}
+                    Sin asignar
+                {% endif %}
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- DESCRIPCIÓN -->
+
+    <div class="incident-description-card mb-4">
+
+        <h5 class="mb-3">
+            Descripción
+        </h5>
+
+        <p class="mb-0">
+            {{ incident.incidence }}
+        </p>
+
+    </div>
+
+    <!-- MAPA -->
+
+    <div
+        id="map"
+        class="modern-map mb-4"
+    ></div>
+
+    <!-- FORMULARIO -->
+
+    <form method="POST">
+
+        <!-- RECURSO -->
+
+        <div class="mb-4">
+
+            <label for="resource" class="form-label">
+                Recurso
+            </label>
+
+            <select
+                name="resource"
+                id="resource"
+                class="form-select modern-select"
+            >
+
+                <option value="">
+                    -- Sin asignar --
+                </option>
+
+                {% for r in resources %}
+
+                <option
+                    value="{{ r.id }}"
+                    {% if incident.resource_id == r.id %}selected{% endif %}
+                >
+                    {{ r.name }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <!-- RESOLUCIÓN -->
+
+        <div class="mb-4">
+
+            <label for="observations" class="form-label">
+                Resolución
+            </label>
+
+            <textarea
+                id="observations"
+                name="observations"
+                class="form-control modern-textarea"
+                placeholder="Escribe la resolución..."
+            >{{ incident.observations if incident.observations else '' }}</textarea>
+
+        </div>
+
+        <!-- BOTONES -->
+
+        <div class="form-actions">
+
+            <button
+                type="submit"
+                name="action"
+                value="save"
+                class="btn custom-btn"
+            >
+
+                <i class="bi bi-floppy me-2"></i>
+
+                Guardar cambios
+
+            </button>
+
+            {% if not incident.end_date %}
+
+            <button
+                type="submit"
+                name="action"
+                value="finish"
+                class="btn btn-danger"
+            >
+
+                <i class="bi bi-check-circle me-2"></i>
+
+                Finalizar incidencia
+
+            </button>
+
+            {% endif %}
+
+        </div>
+
+    </form>
+
 </div>
-
-<div class="mb-3">
-  <label for="observations" class="form-label"><b>Resolución:</b></label>
-  <textarea id="observations" name="observations" class="form-control"  placeholder="Escribe la resolución..."></textarea>
-</div>
-
-<button type="submit" name="action" value="save" class="btn btn-primary mt-3">
-Guardar cambios
-</button>
-
-<button type="submit" name="action" value="finish" class="btn btn-success mt-3">
-Finalizar incidencia
-</button>
-
-</form>
 
 {% endblock %}
 

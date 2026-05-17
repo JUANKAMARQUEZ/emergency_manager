@@ -30,8 +30,9 @@ class User(db.Model, UserMixin):
     role = db.relationship("Role")
 
     incidents = db.relationship(
-        "Incident",
-        lazy=True
+    "Incident",
+    back_populates="user",
+    lazy=True
     )
 
 
@@ -84,7 +85,10 @@ class Incident(db.Model):
 
     # Relaciones
 
-    user = db.relationship("User")
+    user = db.relationship(
+    "User",
+    back_populates="incidents"
+    )
 
     incident_type = db.relationship("IncidentType")
 

@@ -1,43 +1,81 @@
 {% extends "base.html" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Iniciar sesión{% endblock %}
 
 {% block content %}
 
-<div class="row justify-content-center mt-5">
+<div class="login-container">
 
-<div class="col-md-4">
+    <!-- PANEL IZQUIERDO -->
+    <div class="login-left">
 
-<div class="card">
+        <img
+            src="{{ url_for('static', filename='img/logo.png') }}"
+            class="login-logo"
+        >
 
-<div class="card-header text-center">
-<h4>Iniciar sesión</h4>
-</div>
+        <h1 class="login-title">
+            Gestor de Emergencias
+        </h1>
 
-<div class="card-body">
+        <p class="login-subtitle">
+            Plataforma de gestión integral para
+            policía, bomberos y asistencia sanitaria.
+        </p>
 
-<form method="POST">
+    </div>
 
-<div class="mb-3">
-<label>Email</label>
-<input type="email" name="email" class="form-control"
-value="{{ request.form.email }}" required>
-</div>
+    <!-- LOGIN -->
+    <div class="login-card">
 
-<div class="mb-3">
-<label>Contraseña</label>
-<input type="password" name="password" class="form-control" required>
-</div>
+        <h2 class="login-card-title">
+            Iniciar sesión
+        </h2>
 
-<button class="btn btn-primary w-100">Entrar</button>
+        <form method="POST">
 
-</form>
+            <div class="mb-4">
 
-</div>
+                <label class="form-label">
+                    Email
+                </label>
 
-</div>
+                <input
+                    type="email"
+                    name="email"
+                    class="form-control modern-input"
+                    value="{{ request.form.email }}"
+                    required
+                >
 
-</div>
+            </div>
+
+            <div class="mb-4">
+
+                <label class="form-label">
+                    Contraseña
+                </label>
+
+                <input
+                    type="password"
+                    name="password"
+                    class="form-control modern-input"
+                    required
+                >
+
+            </div>
+
+            <button class="btn login-btn w-100">
+
+                <i class="bi bi-box-arrow-in-right me-2"></i>
+
+                Entrar
+
+            </button>
+
+        </form>
+
+    </div>
 
 </div>
 

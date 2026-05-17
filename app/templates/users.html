@@ -4,46 +4,149 @@
 
 {% block content %}
 
-<h2>Usuarios</h2>
+<!-- CABECERA -->
 
-<a href="/users/create" class="btn btn-success mb-3">
-Nuevo usuario
-</a>
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-<table class="table table-striped">
+    <div>
 
-<tr>
-<th>ID</th>
-<th>Nombre</th>
-<th>Email</th>
-<th>Rol</th>
-<th>Acciones</th>
-</tr>
+        <h2 class="dashboard-title mb-1">
 
-{% for user in users %}
+            <i class="bi bi-people-fill me-2"></i>
 
-<tr>
-<td>{{ user.id }}</td>
-<td>{{ user.name }}</td>
-<td>{{ user.email }}</td>
-<td>{{ user.role.name }}</td>
+            Usuarios
 
-<td>
-<a href="/users/edit/{{ user.id }}" class="btn btn-warning btn-sm">
-Editar
-</a>
+        </h2>
 
-<a href="/users/delete/{{ user.id }}"
-class="btn btn-danger btn-sm"
-onclick="return confirm('¿Seguro que quieres eliminar este usuario?')">
-Eliminar
-</a>
-</td>
+        <p class="text-muted mb-0">
+            Gestión de usuarios del sistema
+        </p>
 
-</tr>
+    </div>
 
-{% endfor %}
+    <!-- BOTÓN NUEVO -->
 
-</table>
+    <a href="/users/create" class="btn custom-btn">
+
+        <i class="bi bi-person-plus me-2"></i>
+
+        Nuevo usuario
+
+    </a>
+
+</div>
+
+<!-- TABLA -->
+
+<div class="table-container">
+
+    <table class="modern-table">
+
+        <thead>
+
+            <tr>
+
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for user in users %}
+
+            <tr>
+
+                <td>
+                    #{{ user.id }}
+                </td>
+
+                <td>
+
+                    <div class="d-flex align-items-center gap-2">
+
+                        <div class="table-user-avatar">
+
+                            <i class="bi bi-person-fill"></i>
+
+                        </div>
+
+                        {{ user.name }}
+
+                    </div>
+
+                </td>
+
+                <td>
+                    {{ user.email }}
+                </td>
+
+                <td>
+
+                    {% if user.role.name == "administrador" %}
+
+                    <span class="badge bg-danger">
+                        Administrador
+                    </span>
+
+                    {% else %}
+
+                    <span class="badge bg-primary">
+                        Usuario
+                    </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    <div class="d-flex gap-2">
+
+                        <!-- EDITAR -->
+
+                        <a
+                            href="/users/edit/{{ user.id }}"
+                            class="table-action-btn warning-btn"
+                        >
+
+                            <i class="bi bi-pencil-square"></i>
+
+                            Editar
+
+                        </a>
+
+                        <!-- ELIMINAR -->
+
+                        <a
+                            href="/users/delete/{{ user.id }}"
+                            class="table-action-btn danger-btn"
+                            onclick="return confirm('¿Seguro que quieres eliminar este usuario?')"
+                        >
+
+                            <i class="bi bi-trash"></i>
+
+                            Eliminar
+
+                        </a>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
 
 {% endblock %}
