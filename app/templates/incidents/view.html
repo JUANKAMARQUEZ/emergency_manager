@@ -4,7 +4,7 @@
 
 {% block extra_head %}
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 {% endblock %}
@@ -108,15 +108,27 @@
         <div class="incident-info-card">
 
             <span class="info-label">
-                Recurso
+                Recursos
             </span>
 
             <span class="info-value">
 
-                {% if incident.resource %}
-                    {{ incident.resource.name }}
+                {% if incident.resources %}
+
+                {% for resource in incident.resources %}
+
+                <span class="resource-badge">
+
+                    {{ resource.name }}
+
+                </span>
+
+                {% endfor %}
+
                 {% else %}
-                    Sin asignar
+
+                Sin asignar
+
                 {% endif %}
 
             </span>
@@ -189,10 +201,7 @@
 
     </h5>
 
-    <div
-        id="map"
-        class="modern-map mb-4"
-    ></div>
+    <div id="map" class="modern-map mb-4"></div>
 
     <!-- BOTONES -->
 
@@ -216,22 +225,22 @@
 
 <script>
 
-var map = L.map('map').setView(
-[parseFloat("{{ incident.latitude }}"), parseFloat("{{ incident.longitude }}")], 
-16
-);
+    var map = L.map('map').setView(
+        [parseFloat("{{ incident.latitude }}"), parseFloat("{{ incident.longitude }}")],
+        16
+    );
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-var marker = L.marker([
-parseFloat("{{ incident.latitude }}"),
-parseFloat("{{ incident.longitude }}")
-]).addTo(map);
+    var marker = L.marker([
+        parseFloat("{{ incident.latitude }}"),
+        parseFloat("{{ incident.longitude }}")
+    ]).addTo(map);
 
-// Popup con info
-marker.bindPopup(
-"<b>{{ incident.address }}</b><br>{{ incident.incidence }}"
-);
+    // Popup con info
+    marker.bindPopup(
+        "<b>{{ incident.address }}</b><br>{{ incident.incidence }}"
+    );
 
 </script>
 

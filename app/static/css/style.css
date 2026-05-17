@@ -297,6 +297,8 @@ TABLAS
 .modern-table{
     width:100%;
 
+    /*min-width:1400px;*/
+
     border-collapse:collapse;
 }
 
@@ -689,4 +691,37 @@ MAPA
     font-family:'Segoe UI',sans-serif;
 
     line-height:1.6;
+}
+
+.resource-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    background:#2563eb;
+
+    color:white;
+
+    padding:4px 10px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    margin-right:6px;
+
+    white-space:nowrap;
+
+    vertical-align:middle;
+}
+
+#resources{
+
+    min-height:140px;
+}
+
+.hidden-row{
+
+    display:none;
 }

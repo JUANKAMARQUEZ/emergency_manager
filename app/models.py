@@ -55,6 +55,27 @@ class IncidentType(db.Model):
 
     name = db.Column(db.String(100))
 
+# -----------------------------
+# RELACIÓN INCIDENTES-RECURSOS
+# -----------------------------
+
+incident_resource = db.Table(
+
+    "incident_resource",
+
+    db.Column(
+        "incident_id",
+        db.Integer,
+        db.ForeignKey("incident.id")
+    ),
+
+    db.Column(
+        "resource_id",
+        db.Integer,
+        db.ForeignKey("resource.id")
+    )
+
+)
 
 # -----------------------------
 # INCIDENCIAS
@@ -81,7 +102,7 @@ class Incident(db.Model):
 
     incidentType_id = db.Column(db.Integer, db.ForeignKey('incident_type.id'))
 
-    resource_id = db.Column(db.Integer, db.ForeignKey('resource.id'))
+    
 
     # Relaciones
 
@@ -92,7 +113,13 @@ class Incident(db.Model):
 
     incident_type = db.relationship("IncidentType")
 
-    resource = db.relationship("Resource")
+    resources = db.relationship(
+        "Resource",
+        secondary=incident_resource,
+        backref="incidents"
+    )
+
+    
 
 
 # -----------------------------

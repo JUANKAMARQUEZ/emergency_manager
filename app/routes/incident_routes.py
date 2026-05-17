@@ -101,20 +101,29 @@ def manage_incident(id):
     # RECURSOS DISPONIBLES
     # -------------------------------
 
-    busy_resources = db.session.query(Incident.resource_id)\
-        .filter(Incident.end_date.is_(None))\
-        .filter(Incident.resource_id.is_not(None))\
-        .all()
+    active_incidents = Incident.query.filter(
+    Incident.end_date.is_(None),
+    Incident.id != incident.id
+    ).all()
 
-    busy_ids = [r[0] for r in busy_resources]
+    busy_ids = []
 
-    resources = Resource.query.filter(~Resource.id.in_(busy_ids)).all()
+    for active_incident in active_incidents:
 
-    # Añadir el recurso actual aunque esté ocupado
-    if incident.resource_id:
-        current_resource = Resource.query.get(incident.resource_id)
-        if current_resource not in resources:
-            resources.append(current_resource)
+         for resource in active_incident.resources:
+
+             busy_ids.append(resource.id)
+
+    resources = Resource.query.filter(
+            ~Resource.id.in_(busy_ids)
+        ).all()
+
+    # Añadir recursos actuales de la incidencia
+    for resource in incident.resources:
+
+     if resource not in resources:
+
+        resources.append(resource)
 
     # -------------------------------
     # POST
@@ -124,56 +133,65 @@ def manage_incident(id):
 
         action = request.form.get("action")
 
-        # ✔ asignar / quitar recurso
-        resource_id = request.form.get("resource")
+        # ✔ múltiples recursos
+        resource_ids = request.form.getlist("resources[]")
 
-        if resource_id:
+        selected_resources = []
+
+        for resource_id in resource_ids:
 
             resource = Resource.query.get(resource_id)
 
+            # Validar existencia
             if not resource:
 
                 flash(
-                    "El recurso no existe",
-                    "danger"
-                 )
+                "Uno de los recursos no existe",
+                "danger"
+                )
 
                 return redirect(request.url)
 
-        # 🔒 validar recurso ocupado
-        if resource_id:
-
-            busy_incident = Incident.query.filter(
-                Incident.resource_id == resource_id,
-                Incident.end_date.is_(None),
-                Incident.id != incident.id
+            # Validar recurso ocupado
+            busy_incident = Incident.query.join(
+                Incident.resources
+            ).filter(
+                Resource.id == resource.id,
+                Incident.end_date.is_(None)
             ).first()
 
-            if busy_incident:
+            if busy_incident and busy_incident.id != incident.id:
 
                 flash(
-                    "Ese recurso ya está asignado a otra incidencia activa",
+                    f"El recurso {resource.name} ya está asignado",
                     "danger"
-                 )
+                )
 
                 return redirect(request.url)
 
-        if resource_id:
-            incident.resource_id = resource_id
-        else:
-            incident.resource_id = None
+            
 
-        # ✔ guardar observaciones SIEMPRE
+            selected_resources.append(resource)
+
+        # Asignar recursos
+        incident.resources = selected_resources
+
+        # ✔ guardar observaciones
         incident.observations = request.form.get("observations")
 
         # ✔ finalizar incidencia
         if action == "finish":
 
-          if not incident.observations:
-             flash("Debes indicar una resolución", "danger")
-             return redirect(request.url)
+            if not incident.observations:
 
-          incident.end_date = datetime.now()
+                flash(
+                "Debes indicar una resolución",
+                "danger"
+                )
+
+                return redirect(request.url)
+
+            incident.end_date = datetime.now()
 
         db.session.commit()
 
@@ -212,7 +230,9 @@ def map_incidents():
 
                 "type": incident.incident_type.name if incident.incident_type else "Otros",
 
-                "resource": incident.resource.name if incident.resource else "Sin asignar",
+                "resource": ", ".join(
+                    [r.name for r in incident.resources]
+                ) if incident.resources else "Sin asignar",
 
                 "resolution": incident.observations if incident.observations else "Pendiente",
 

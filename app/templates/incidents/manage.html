@@ -4,7 +4,7 @@
 
 {% block extra_head %}
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 {% endblock %}
@@ -89,10 +89,20 @@
 
             <span class="info-value">
 
-                {% if incident.resource %}
-                    {{ incident.resource.name }}
+                {% if incident.resources %}
+
+                {% for resource in incident.resources %}
+
+                <span class="resource-badge">
+                    {{ resource.name }}
+                </span>
+
+                {% endfor %}
+
                 {% else %}
-                    Sin asignar
+
+                Sin asignar
+
                 {% endif %}
 
             </span>
@@ -117,10 +127,7 @@
 
     <!-- MAPA -->
 
-    <div
-        id="map"
-        class="modern-map mb-4"
-    ></div>
+    <div id="map" class="modern-map mb-4"></div>
 
     <!-- FORMULARIO -->
 
@@ -130,32 +137,31 @@
 
         <div class="mb-4">
 
-            <label for="resource" class="form-label">
-                Recurso
+            <label for="resources" class="form-label">
+
+                Recursos asignados
+
             </label>
 
-            <select
-                name="resource"
-                id="resource"
-                class="form-select modern-select"
-            >
-
-                <option value="">
-                    -- Sin asignar --
-                </option>
+            <select name="resources[]" id="resources" class="form-select modern-select" multiple>
 
                 {% for r in resources %}
 
-                <option
-                    value="{{ r.id }}"
-                    {% if incident.resource_id == r.id %}selected{% endif %}
-                >
+                <option value="{{ r.id }}" {% if r in incident.resources %}selected{% endif %}>
+
                     {{ r.name }}
+
                 </option>
 
                 {% endfor %}
 
             </select>
+
+            <small class="text-muted">
+
+                Mantén CTRL pulsado para seleccionar varios recursos.
+
+            </small>
 
         </div>
 
@@ -167,12 +173,8 @@
                 Resolución
             </label>
 
-            <textarea
-                id="observations"
-                name="observations"
-                class="form-control modern-textarea"
-                placeholder="Escribe la resolución..."
-            >{{ incident.observations if incident.observations else '' }}</textarea>
+            <textarea id="observations" name="observations" class="form-control modern-textarea"
+                placeholder="Escribe la resolución...">{{ incident.observations if incident.observations else '' }}</textarea>
 
         </div>
 
@@ -180,12 +182,7 @@
 
         <div class="form-actions">
 
-            <button
-                type="submit"
-                name="action"
-                value="save"
-                class="btn custom-btn"
-            >
+            <button type="submit" name="action" value="save" class="btn custom-btn">
 
                 <i class="bi bi-floppy me-2"></i>
 
@@ -195,12 +192,7 @@
 
             {% if not incident.end_date %}
 
-            <button
-                type="submit"
-                name="action"
-                value="finish"
-                class="btn btn-danger"
-            >
+            <button type="submit" name="action" value="finish" class="btn btn-danger">
 
                 <i class="bi bi-check-circle me-2"></i>
 
@@ -222,17 +214,17 @@
 
 <script>
 
-var map = L.map('map').setView(
-[parseFloat("{{ incident.latitude }}"), parseFloat("{{ incident.longitude }}")], 
-16
-);
+    var map = L.map('map').setView(
+        [parseFloat("{{ incident.latitude }}"), parseFloat("{{ incident.longitude }}")],
+        16
+    );
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-L.marker([
-parseFloat("{{ incident.latitude }}"),
-parseFloat("{{ incident.longitude }}")
-]).addTo(map);
+    L.marker([
+        parseFloat("{{ incident.latitude }}"),
+        parseFloat("{{ incident.longitude }}")
+    ]).addTo(map);
 
 </script>
 
