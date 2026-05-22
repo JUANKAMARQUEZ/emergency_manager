@@ -56,6 +56,8 @@ with app.app_context():
 
         "Incidencia de Tráfico",
 
+        "Siniestro Vial",
+
         "Seguridad Ciudadana",
 
         "Otros"
