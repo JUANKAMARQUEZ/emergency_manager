@@ -129,6 +129,54 @@
 
     <div id="map" class="modern-map mb-4"></div>
 
+    {% if main_resource %}
+
+    <div class="alert alert-info mb-4">
+
+        <h5 class="mb-3">
+
+            <i class="bi bi-cpu me-2"></i>
+
+            Sugerencia automática de recursos
+
+        </h5>
+
+        <div class="mb-2">
+
+            <b>Recurso principal sugerido:</b>
+
+            <span class="resource-badge">
+
+                {{ main_resource.name }}
+
+            </span>
+
+            ({{ main_distance }} km)
+
+        </div>
+
+        {% if support_resource %}
+
+        <div>
+
+            <b>Policía de apoyo sugerida:</b>
+
+            <span class="resource-badge">
+
+                {{ support_resource.name }}
+
+            </span>
+
+            ({{ support_distance }} km)
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
     <!-- FORMULARIO -->
 
     <form method="POST">

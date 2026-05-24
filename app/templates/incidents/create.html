@@ -4,7 +4,7 @@
 
 {% block extra_head %}
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 {% endblock %}
@@ -31,24 +31,14 @@
                 Dirección
             </label>
 
-            <input
-                type="text"
-                id="address"
-                name="address"
-                class="form-control modern-input"
-                placeholder="Introduce una dirección..."
-                required
-            >
+            <input type="text" id="address" name="address" class="form-control modern-input"
+                placeholder="Introduce una dirección..." required>
 
         </div>
 
         <!-- BOTÓN MAPA -->
 
-        <button
-            type="button"
-            onclick="buscarDireccion()"
-            class="btn custom-btn mb-4"
-        >
+        <button type="button" onclick="buscarDireccion()" class="btn custom-btn mb-4">
 
             <i class="bi bi-search me-2"></i>
 
@@ -63,10 +53,7 @@
 
         <!-- MAPA -->
 
-        <div
-            id="map"
-            class="modern-map mb-4"
-        ></div>
+        <div id="map" class="modern-map mb-4"></div>
 
         <!-- TIPO -->
 
@@ -76,10 +63,7 @@
                 Tipo de incidencia
             </label>
 
-            <select
-                name="incident_type"
-                class="form-select modern-select"
-            >
+            <select name="incident_type" class="form-select modern-select">
 
                 {% for type in types %}
 
@@ -101,13 +85,60 @@
                 Descripción
             </label>
 
-            <textarea
-                name="incidence"
-                class="form-control modern-textarea"
-                placeholder="Describe la incidencia..."
-            ></textarea>
+            <textarea name="incidence" class="form-control modern-textarea"
+                placeholder="Describe la incidencia..."></textarea>
 
         </div>
+
+        <!-- RECURSOS SUGERIDOS -->
+         
+        {% if main_resource %}
+
+        <div class="alert alert-info mt-4">
+
+            <h5 class="mb-3">
+
+                <i class="bi bi-cpu me-2"></i>
+
+                Sugerencia automática de recursos
+
+            </h5>
+
+            <div class="mb-2">
+
+                <b>Recurso principal sugerido:</b>
+
+                <span class="resource-badge">
+
+                    {{ main_resource.name }}
+
+                </span>
+
+                ({{ main_distance }} km)
+
+            </div>
+
+            {% if support_resource %}
+
+            <div>
+
+                <b>Policía de apoyo sugerida:</b>
+
+                <span class="resource-badge">
+
+                    {{ support_resource.name }}
+
+                </span>
+
+                ({{ support_distance }} km)
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        {% endif %}
 
         <!-- BOTONES -->
 
@@ -139,56 +170,56 @@
 
 <script>
 
-// 📍 Inicializar mapa en Sevilla
-var map = L.map('map').setView([37.3886, -5.9823], 13);
+    // 📍 Inicializar mapa en Sevilla
+    var map = L.map('map').setView([37.3886, -5.9823], 13);
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-maxZoom: 19
-}).addTo(map);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19
+    }).addTo(map);
 
-var marker;
+    var marker;
 
 
-// 🔎 Buscar dirección
-function buscarDireccion(){
+    // 🔎 Buscar dirección
+    function buscarDireccion() {
 
-var address = document.getElementById("address").value;
+        var address = document.getElementById("address").value;
 
-// Limitar a Sevilla
-var url = "https://nominatim.openstreetmap.org/search?format=json&q=" 
-          + address + ", Sevilla, España";
+        // Limitar a Sevilla
+        var url = "https://nominatim.openstreetmap.org/search?format=json&q="
+            + address + ", Sevilla, España";
 
-fetch(url)
-.then(response => response.json())
-.then(data => {
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
 
-if(data.length > 0){
+                if (data.length > 0) {
 
-var lat = data[0].lat;
-var lon = data[0].lon;
+                    var lat = data[0].lat;
+                    var lon = data[0].lon;
 
-// Mover mapa
-map.setView([lat, lon], 16);
+                    // Mover mapa
+                    map.setView([lat, lon], 16);
 
-// Crear marcador
-if(marker){
-map.removeLayer(marker);
-}
+                    // Crear marcador
+                    if (marker) {
+                        map.removeLayer(marker);
+                    }
 
-marker = L.marker([lat, lon]).addTo(map);
+                    marker = L.marker([lat, lon]).addTo(map);
 
-// Guardar coordenadas
-document.getElementById("latitude").value = lat;
-document.getElementById("longitude").value = lon;
+                    // Guardar coordenadas
+                    document.getElementById("latitude").value = lat;
+                    document.getElementById("longitude").value = lon;
 
-}
-else{
-alert("Dirección no encontrada");
-}
+                }
+                else {
+                    alert("Dirección no encontrada");
+                }
 
-});
+            });
 
-}
+    }
 
 </script>
 

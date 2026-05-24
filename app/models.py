@@ -45,6 +45,10 @@ class Resource(db.Model):
 
     name = db.Column(db.String(50))
 
+    latitude = db.Column(db.Float)
+
+    longitude = db.Column(db.Float)
+
 
 # -----------------------------
 # TIPOS DE INCIDENCIA
