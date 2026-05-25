@@ -129,6 +129,10 @@
 
     <div id="map" class="modern-map mb-4"></div>
 
+    <script id="resources-data" type="application/json">
+    {{ resources_map | tojson }}
+    </script>
+
     {% if main_resource %}
 
     <div class="alert alert-info mb-4">
@@ -248,7 +252,16 @@
 
             </button>
 
+
             {% endif %}
+
+            <a href="/incidents" class="btn nav-btn text-dark border">
+
+                <i class="bi bi-arrow-left me-2"></i>
+
+                Volver
+
+            </a>
 
         </div>
 
@@ -267,12 +280,109 @@
         16
     );
 
+    var resources = JSON.parse(
+        document.getElementById("resources-data").textContent
+    );
+
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    var ambulanceIcon = L.icon({
+
+        iconUrl: "/static/icons/ambulancia.svg",
+
+        iconSize: [42, 42],
+
+        iconAnchor: [21, 42],
+
+        popupAnchor: [0, -42]
+    });
+
+    var policeIcon = L.icon({
+
+        iconUrl: "/static/icons/policia.svg",
+
+        iconSize: [42, 42],
+
+        iconAnchor: [21, 42],
+
+        popupAnchor: [0, -42]
+    });
+
+    var fireIcon = L.icon({
+
+        iconUrl: "/static/icons/bombero.svg",
+
+        iconSize: [42, 42],
+
+        iconAnchor: [21, 42],
+
+        popupAnchor: [0, -42]
+    });
 
     L.marker([
         parseFloat("{{ incident.latitude }}"),
         parseFloat("{{ incident.longitude }}")
     ]).addTo(map);
+
+    resources.forEach(function (resource) {
+
+        if (!resource.latitude || !resource.longitude) {
+            return;
+        }
+
+        var icon;
+
+        if (resource.name.startsWith("A-")) {
+
+            icon = ambulanceIcon;
+        }
+
+        else if (resource.name.startsWith("P-")) {
+
+            icon = policeIcon;
+        }
+
+        else {
+
+            icon = fireIcon;
+        }
+
+        var marker = L.marker(
+            [resource.latitude, resource.longitude],
+            { icon: icon }
+        ).addTo(map);
+
+        // 🔴 Halo ocupado
+
+        if (resource.busy) {
+
+            marker._icon.style.filter =
+                "drop-shadow(0 0 10px red)";
+        }
+
+        // 📍 Indicativo
+
+        L.marker(
+            [resource.latitude, resource.longitude],
+            {
+                icon: L.divIcon({
+
+                    className: "resource-label",
+
+                    html:
+                        `<div class="resource-map-label">
+                        ${resource.name}
+                    </div>`,
+
+                    iconSize: [38, 20],
+
+                    iconAnchor: [-10, 45]
+                })
+            }
+        ).addTo(map);
+
+
+    });
 
 </script>
 

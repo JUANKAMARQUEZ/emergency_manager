@@ -4,7 +4,7 @@
 
 {% block extra_head %}
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 {% endblock %}
@@ -87,10 +87,15 @@
                     <input type="checkbox" class="filterType" value="Incendio" checked>
                     <span>Incendio</span>
                 </label>
-
+                
                 <label class="modern-check">
                     <input type="checkbox" class="filterType" value="Asistencia Sanitaria" checked>
                     <span>Sanitaria</span>
+                </label>
+
+                <label class="modern-check">
+                    <input type="checkbox" class="filterType" value="Siniestro Vial" checked>
+                    <span>Siniestro Vial</span>
                 </label>
 
                 <label class="modern-check">
@@ -126,87 +131,202 @@
 {{ incidents | tojson }}
 </script>
 
+<script id="resources-data" type="application/json">
+{{ resources | tojson }}
+</script>
+
 <script>
 
-var map = L.map('map').setView([37.3886, -5.9823], 13);
+    var map = L.map('map').setView([37.3886, -5.9823], 13);
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-maxZoom: 19
-}).addTo(map);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19
+    }).addTo(map);
 
-var redIcon = L.icon({
-iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
-shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-iconSize: [25,41],
-iconAnchor: [12,41]
-});
 
-var greenIcon = L.icon({
-iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
-shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-iconSize: [25,41],
-iconAnchor: [12,41]
-});
+    var redIcon = L.icon({
+        iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+        shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41]
+    });
 
-var incidents = JSON.parse(
-document.getElementById("incidents-data").textContent
-);
+    var greenIcon = L.icon({
+        iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
+        shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41]
+    });
 
-var markers = [];
+    var ambulanceIcon = L.icon({
 
-function drawIncidents(){
+        iconUrl: "/static/icons/ambulancia.svg",
 
-markers.forEach(m => map.removeLayer(m));
-markers = [];
+        iconSize: [42, 42],
 
-var showActive = document.getElementById("filterActive").checked;
-var showClosed = document.getElementById("filterClosed").checked;
+        iconAnchor: [21, 42],
 
-var typesChecked = [];
-document.querySelectorAll(".filterType:checked").forEach(el => {
-typesChecked.push(el.value.toLowerCase());
-});
+        popupAnchor: [0, -42]
+    });
 
-incidents.forEach(function(incident){
+    var policeIcon = L.icon({
 
-if(!incident.latitude || !incident.longitude) return;
+        iconUrl: "/static/icons/policia.svg",
 
-if(incident.status === "activa" && !showActive) return;
-if(incident.status === "finalizada" && !showClosed) return;
+        iconSize: [42, 42],
 
-var match = typesChecked.some(t => 
-incident.type.toLowerCase().includes(t)
-);
+        iconAnchor: [21, 42],
 
-if(!match) return;
+        popupAnchor: [0, -42]
+    });
 
-var icon = incident.status === "activa" ? redIcon : greenIcon;
+    var fireIcon = L.icon({
 
-var marker = L.marker(
-[parseFloat(incident.latitude), parseFloat(incident.longitude)],
-{icon: icon}
-).addTo(map);
+        iconUrl: "/static/icons/bombero.svg",
 
-marker.bindPopup(
-"<b>" + incident.address + "</b><br>" +
-"<b>Tipo:</b> " + incident.type + "<br>" +
-"<b>Descripción:</b> " + incident.incidence + "<br>" +
-"<b>Recurso:</b> " + incident.resource + "<br>" +
-"<b>Resolución:</b> " + incident.resolution + "<br>" +
-"<b>Estado:</b> " + incident.status
-);
+        iconSize: [42, 42],
 
-markers.push(marker);
+        iconAnchor: [21, 42],
 
-});
+        popupAnchor: [0, -42]
+    });
 
-}
 
-drawIncidents();
+    var incidents = JSON.parse(
+        document.getElementById("incidents-data").textContent
+    );
 
-document.querySelectorAll("input").forEach(el => {
-el.addEventListener("change", drawIncidents);
-});
+    var resources = JSON.parse(
+        document.getElementById("resources-data").textContent
+    );
+
+
+    var markers = [];
+
+    function drawIncidents() {
+
+        markers.forEach(m => map.removeLayer(m));
+        markers = [];
+
+        var showActive = document.getElementById("filterActive").checked;
+        var showClosed = document.getElementById("filterClosed").checked;
+
+        var typesChecked = [];
+        document.querySelectorAll(".filterType:checked").forEach(el => {
+            typesChecked.push(el.value.toLowerCase());
+        });
+
+        incidents.forEach(function (incident) {
+
+            if (!incident.latitude || !incident.longitude) return;
+
+            if (incident.status === "activa" && !showActive) return;
+            if (incident.status === "finalizada" && !showClosed) return;
+
+            var match = typesChecked.some(t =>
+                incident.type.toLowerCase().includes(t)
+            );
+
+            if (!match) return;
+
+            var icon = incident.status === "activa" ? redIcon : greenIcon;
+
+            var marker = L.marker(
+                [parseFloat(incident.latitude), parseFloat(incident.longitude)],
+                { icon: icon }
+            ).addTo(map);
+
+
+
+            marker.bindPopup(
+                "<b>" + incident.address + "</b><br>" +
+                "<b>Tipo:</b> " + incident.type + "<br>" +
+                "<b>Descripción:</b> " + incident.incidence + "<br>" +
+                "<b>Recurso:</b> " + incident.resource + "<br>" +
+                "<b>Resolución:</b> " + incident.resolution + "<br>" +
+                "<b>Estado:</b> " + incident.status
+            );
+
+            markers.push(marker);
+
+        });
+
+    }
+
+    drawIncidents();
+
+    resources.forEach(function (resource) {
+
+        if (!resource.latitude || !resource.longitude) {
+            return;
+        }
+
+        var icon;
+
+        // 🚑 Ambulancia
+        if (resource.name.startsWith("A-")) {
+
+            icon = ambulanceIcon;
+        }
+
+        // 🚓 Policía
+        else if (resource.name.startsWith("P-")) {
+
+            icon = policeIcon;
+        }
+
+        // 🚒 Bomberos
+        else {
+
+            icon = fireIcon;
+        }
+
+        var marker = L.marker(
+            [resource.latitude, resource.longitude],
+            { icon: icon }
+        ).addTo(map);
+
+        // 📍 Etiqueta del indicativo
+
+        L.marker(
+            [resource.latitude, resource.longitude],
+            {
+                icon: L.divIcon({
+
+                    className: "resource-label",
+
+                    html:
+                        `<div class="resource-map-label">
+                    ${resource.name}
+                </div>`,
+
+                    iconSize: [38, 20],
+
+                    iconAnchor: [-10, 45]
+                })
+            }
+        ).addTo(map);
+
+        if (resource.busy) {
+
+            marker._icon.style.filter =
+                "drop-shadow(0 0 10px red)";
+        }
+
+        marker.bindPopup(
+
+            "<b>" + resource.name + "</b><br>" +
+
+            "Estado: " +
+
+            (resource.busy ? "Ocupado" : "Libre")
+        );
+
+    });
+
+    document.querySelectorAll("input").forEach(el => {
+        el.addEventListener("change", drawIncidents);
+    });
 
 </script>
 

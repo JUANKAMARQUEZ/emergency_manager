@@ -33,7 +33,7 @@ def calculate_distance(lat1, lon1, lat2, lon2):
 
 
 # --------------------------------
-# OBTENER RECURSO MÁS CERCANO
+# FUNCIÓN PARA OBTENER RECURSO MÁS CERCANO
 # --------------------------------
 
 
@@ -345,6 +345,27 @@ def manage_incident(id):
     # GET
     # -------------------------------
 
+    resources_data = []
+
+    all_resources = Resource.query.all()
+
+    for resource in all_resources:
+
+        busy_incident = (
+            Incident.query.join(Incident.resources)
+            .filter(Resource.id == resource.id, Incident.end_date.is_(None))
+            .first()
+        )
+
+        resources_data.append(
+            {
+                "id": resource.id,
+                "name": resource.name,
+                "latitude": resource.latitude,
+                "longitude": resource.longitude,
+                "busy": True if busy_incident else False,
+            }
+        )
     return render_template(
         "incidents/manage.html",
         incident=incident,
@@ -353,6 +374,7 @@ def manage_incident(id):
         main_distance=main_distance,
         support_resource=support_resource,
         support_distance=support_distance,
+        resources_map=resources_data,
     )
 
 
@@ -368,6 +390,7 @@ def map_incidents():
     incidents = Incident.query.all()
 
     data = []
+    resources_data = []
 
     for incident in incidents:
 
@@ -397,7 +420,27 @@ def map_incidents():
                 }
             )
 
-    return render_template("map.html", incidents=data)
+    resources = Resource.query.all()
+
+    for resource in resources:
+
+        busy_incident = (
+            Incident.query.join(Incident.resources)
+            .filter(Resource.id == resource.id, Incident.end_date.is_(None))
+            .first()
+        )
+
+        resources_data.append(
+            {
+                "id": resource.id,
+                "name": resource.name,
+                "latitude": resource.latitude,
+                "longitude": resource.longitude,
+                "busy": True if busy_incident else False,
+            }
+        )
+
+    return render_template("map.html", incidents=data, resources=resources_data)
 
 
 # ---------------------------
