@@ -275,3 +275,6 @@ Juan Carlos Márquez Romero
 
 Proyecto desarrollado como Trabajo Fin de Grado (TFG)
 Ciclo Desarrollo de Aplicaciones Web (DAW).
+
+I.E.S. Punta del Verde (Sevilla)
+Curso 2025/2026
