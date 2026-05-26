@@ -279,7 +279,7 @@ La aplicación está preparada para despliegue en:
 
 # 👨‍💻 Autor
 
-Juan Carlos Márquez Romero
+Juan Carlos Márquez Romero  
 
 Proyecto desarrollado como Trabajo Fin de Grado (TFG)
 
