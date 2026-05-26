@@ -184,7 +184,7 @@ Incluyendo:
 
 ## 🔹 Gestión de incidencia
 
-![Gestionar incidencia](capturas/Gestión incidencias.png)
+![Gestionar](capturas/Gestión incidencia.png)
 
 ---
 
