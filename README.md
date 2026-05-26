@@ -1,123 +1,244 @@
 # 🚨 Emergency Manager
 
-Aplicación web desarrollada con Flask para la gestión de emergencias e incidencias.
-
-## 📌 Descripción
-
-Emergency Manager es una aplicación orientada a la gestión de incidencias, recursos y usuarios, permitiendo controlar emergencias mediante un mapa interactivo y un sistema de gestión completo.
-
-El proyecto ha sido desarrollado como Trabajo Fin de Grado (TFG) del ciclo Desarrollo de Aplicaciones Web (DAW).
+Aplicación web desarrollada con Flask para la gestión integral de emergencias, incidencias y recursos operativos en tiempo real.
 
 ---
 
-## 🚀 Funcionalidades
+# 📌 Descripción
 
-### 👤 Gestión de usuarios
+Emergency Manager es una plataforma orientada a la coordinación de emergencias y servicios operativos, permitiendo gestionar incidencias, recursos y usuarios mediante un entorno visual moderno y un mapa interactivo.
 
-- Inicio y cierre de sesión
-- Roles de usuario
-- Administración de usuarios
-- Contraseñas cifradas con PBKDF2
+La aplicación simula un centro de coordinación de emergencias donde policía, bomberos y servicios sanitarios pueden gestionar actuaciones operativas sobre el terreno.
 
-### 🚨 Gestión de incidencias
-
-- Crear incidencias
-- Gestionar incidencias
-- Finalizar incidencias
-- Resoluciones
-- Filtros por estado
-- Historial de incidencias
-
-### 🚓 Gestión de recursos
-
-- Asignación de recursos
-- Control de recursos ocupados
-- Liberación automática al finalizar incidencias
-
-### 🗺️ Mapa interactivo
-
-- Geolocalización de incidencias
-- Visualización mediante Leaflet y OpenStreetMap
+Este proyecto ha sido desarrollado como Trabajo Fin de Grado (TFG) del ciclo Desarrollo de Aplicaciones Web (DAW).
 
 ---
 
-## 🛠️ Tecnologías utilizadas
+# 🚀 Funcionalidades principales
 
-- Python
-- Flask
-- SQLAlchemy
-- Flask-Login
-- MySQL
-- Bootstrap 5
-- Leaflet
-- HTML5
-- CSS3
-- JavaScript
+## 👤 Gestión de usuarios
 
----
-
-## 🔐 Seguridad
-
-- Contraseñas cifradas mediante PBKDF2
-- Validación de formularios
-- Control de acceso por roles
-- Protección de rutas mediante login_required
+* Inicio y cierre de sesión
+* Roles de usuario y administrador
+* Gestión completa de usuarios
+* Contraseñas cifradas mediante PBKDF2
+* Validación de contraseña actual para cambios personales
+* Protección contra eliminación del último administrador
+* Protección contra autoeliminación
 
 ---
 
-## 📷 Capturas
+## 🚨 Gestión de incidencias
 
-### Panel de Control
+* Crear incidencias
+* Gestionar incidencias activas
+* Finalizar incidencias
+* Historial de incidencias
+* Resoluciones operativas
+* Filtros por estado y tipo
+* Clasificación por tipología:
 
-![(Añadir captura)](capturas/dashboard.png)
-
-### Incidencias
-
-![(Añadir captura)](capturas/Incidencias.png)
-
-### Mapa interactivo
-
-![(Añadir captura)](capturas/Mapa.png)
-
-### Gestión de suarios
-
-![(Añadir captura)](capturas/Usuarios.png)
-
-### Gestionar incidencia
-
-![(añadir captura)](<capturas/Gestión incidencia.png>)
+  * Incendio
+  * Incidencia de tráfico
+  * Seguridad ciudadana
+  * Asistencia sanitaria
+  * Siniestro vial
+  * Otros
 
 ---
 
-## ⚙️ Instalación
+## 🚓 Gestión de recursos operativos
 
-### 1️⃣ Clonar repositorio
+* Recursos policiales (P)
+* Recursos sanitarios (A)
+* Recursos de bomberos (B)
+* Estado libre / ocupado
+* Asignación automática
+* Liberación automática al finalizar incidencias
+* Visualización en mapa operativo
+
+---
+
+## 🧠 Sistema inteligente de sugerencias
+
+La aplicación incorpora un sistema automático de sugerencia de recursos basado en:
+
+* Tipo de incidencia
+* Distancia geográfica
+* Recursos disponibles
+* Prioridad operativa
+
+### Ejemplos:
+
+| Tipo incidencia      | Recurso sugerido              |
+| -------------------- | ----------------------------- |
+| Incendio             | Bomberos más cercanos         |
+| Asistencia sanitaria | Ambulancia más cercana        |
+| Siniestro vial       | Ambulancia + apoyo policial   |
+| Seguridad ciudadana  | Patrulla policial más cercana |
+
+---
+
+## 🗺️ Mapa interactivo operativo
+
+Integración completa con:
+
+* Leaflet
+* OpenStreetMap
+
+### Funcionalidades:
+
+* Geolocalización de incidencias
+* Visualización de recursos operativos
+* Iconos personalizados
+* Estado visual de recursos ocupados
+* Gestión desde mapa
+* Vista responsive para dispositivos móviles
+
+---
+
+# 📱 Diseño responsive
+
+La aplicación ha sido adaptada para:
+
+* Ordenadores
+* Tablets
+* Dispositivos móviles
+
+Incluyendo:
+
+* Navbar responsive
+* Formularios adaptativos
+* Scroll horizontal inteligente en tablas
+* Optimización visual móvil
+
+---
+
+# 🔐 Seguridad
+
+* Contraseñas cifradas mediante PBKDF2
+* Protección de rutas mediante Flask-Login
+* Control de acceso por roles
+* Validaciones backend
+* Restricción de modificación de email
+* Validación de contraseña actual
+* Protección contra accesos no autorizados
+
+---
+
+# 🛠️ Tecnologías utilizadas
+
+## Backend
+
+* Python
+* Flask
+* SQLAlchemy
+* Flask-Login
+* Gunicorn
+
+## Base de datos
+
+* SQLite (desarrollo)
+* PostgreSQL (producción)
+
+## Frontend
+
+* HTML5
+* CSS3
+* JavaScript
+* Bootstrap 5
+* Bootstrap Icons
+
+## Mapas y geolocalización
+
+* Leaflet
+* OpenStreetMap
+
+---
+
+# 📷 Capturas
+
+## 🔹 Panel de control
+
+![Dashboard](capturas/dashboard.png)
+
+---
+
+## 🔹 Gestión de incidencias
+
+![Incidencias](capturas/incidencias.png)
+
+---
+
+## 🔹 Mapa operativo
+
+![Mapa](capturas/mapa.png)
+
+---
+
+## 🔹 Gestión de usuarios
+
+![Usuarios](capturas/usuarios.png)
+
+---
+
+## 🔹 Gestión de incidencia
+
+![Gestionar incidencia](capturas/manage_incident.png)
+
+---
+
+# ⚙️ Instalación local
+
+## 1️⃣ Clonar repositorio
 
 ```bash
 git clone https://github.com/JUANKAMARQUEZ/emergency_manager.git
 ```
 
-### 2️⃣ Crear entorno virtual
+---
+
+## 2️⃣ Acceder al proyecto
+
+```bash
+cd emergency_manager
+```
+
+---
+
+## 3️⃣ Crear entorno virtual
 
 ```bash
 python -m venv venv
 ```
 
-### 3️⃣ Activar entorno virtual
+---
 
-#### Windows
+## 4️⃣ Activar entorno virtual
+
+### Windows
 
 ```bash
 venv\Scripts\activate
 ```
 
-### 4️⃣ Instalar dependencias
+### Linux / Mac
+
+```bash
+source venv/bin/activate
+```
+
+---
+
+## 5️⃣ Instalar dependencias
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 5️⃣ Ejecutar aplicación
+---
+
+## 6️⃣ Ejecutar aplicación
 
 ```bash
 python run.py
@@ -125,8 +246,32 @@ python run.py
 
 ---
 
-## 👨‍💻 Autor
+# 🌐 Despliegue
+
+La aplicación está preparada para despliegue en:
+
+* Render
+* PostgreSQL
+* Gunicorn
+
+---
+
+# 🚀 Futuras mejoras
+
+* Sistema de notificaciones en tiempo real
+* Integración con correo electrónico
+* Geolocalización GPS en tiempo real
+* Chat operativo interno
+* Panel estadístico avanzado
+* Sistema de prioridades automáticas
+* Gestión documental de incidencias
+* Subida de imágenes adjuntas
+
+---
+
+# 👨‍💻 Autor
 
 Juan Carlos Márquez Romero
 
-Proyecto desarrollado como TFG DAW.
+Proyecto desarrollado como Trabajo Fin de Grado (TFG)
+Ciclo Desarrollo de Aplicaciones Web (DAW).
