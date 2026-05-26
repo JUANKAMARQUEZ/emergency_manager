@@ -67,11 +67,11 @@ El proyecto ha sido desarrollado como Trabajo Fin de Grado (TFG) del ciclo Desar
 
 ## 📷 Capturas
 
-### Dashboard
+### Panel de Control
 
 ![(Añadir captura)](capturas/dashboard.png)
 
-### Gestión de incidencias
+### Incidencias
 
 ![(Añadir captura)](capturas/Incidencias.png)
 
