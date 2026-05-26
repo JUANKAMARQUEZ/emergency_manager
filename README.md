@@ -164,7 +164,7 @@ Incluyendo:
 
 ---
 
-## 🔹 Gestión de incidencias
+## 🔹 Incidencias
 
 ![Incidencias](capturas/incidencias.png)
 
@@ -172,19 +172,19 @@ Incluyendo:
 
 ## 🔹 Mapa operativo
 
-![Mapa](capturas/mapa.png)
+![Mapa](capturas/Mapa.png)
 
 ---
 
 ## 🔹 Gestión de usuarios
 
-![Usuarios](capturas/usuarios.png)
+![Usuarios](capturas/Usuarios.png)
 
 ---
 
 ## 🔹 Gestión de incidencia
 
-![Gestionar incidencia](capturas/manage_incident.png)
+![Gestionar incidencia](capturas/Gestión incidencias.png)
 
 ---
 
