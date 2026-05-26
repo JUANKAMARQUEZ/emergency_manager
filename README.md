@@ -166,7 +166,7 @@ Incluyendo:
 
 ## 🔹 Incidencias
 
-![Incidencias](capturas/incidencias.png)
+![Incidencias](capturas/Incidencias.png)
 
 ---
 
@@ -184,7 +184,7 @@ Incluyendo:
 
 ## 🔹 Gestión de incidencia
 
-![Gestionar](capturas/Gestión incidencia.png)
+![Gestionar](capturas/Gestión_incidencia.png)
 
 ---
 
