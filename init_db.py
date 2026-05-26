@@ -17,6 +17,13 @@ with app.app_context():
     # Crear tablas
     db.create_all()
 
+    # Evitar duplicados
+    if Role.query.first():
+
+        print("La base de datos ya está inicializada")
+
+        exit()
+
     # -------------------------
     # ROLES
     # -------------------------
@@ -81,17 +88,29 @@ with app.app_context():
 
         "A-3",
 
+        "A-4",
+
+        "A-5",
+
         "P-1",
 
         "P-2",
 
         "P-3",
 
+        "P-4",
+
+        "P-5",
+
         "B-1",
 
         "B-2",
 
-        "B-3"
+        "B-3",
+
+        "B-4",
+
+        "B-5"
     ]
 
     for r in resources:
