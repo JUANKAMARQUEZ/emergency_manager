@@ -138,7 +138,7 @@ Incluyendo:
 
 ## Base de datos
 
-* SQLite (desarrollo)
+* MySQL (desarrollo)
 * PostgreSQL (producción)
 
 ## Frontend
