@@ -42,13 +42,8 @@
                 Nombre
             </label>
 
-            <input
-                type="text"
-                name="name"
-                value="{{ user.name }}"
-                class="form-control modern-input"
-                placeholder="Introduce tu nombre"
-            >
+            <input type="text" name="name" value="{{ user.name }}" class="form-control modern-input"
+                placeholder="Introduce tu nombre">
 
         </div>
 
@@ -60,13 +55,8 @@
                 Email
             </label>
 
-            <input
-                type="email"
-                name="email"
-                value="{{ user.email }}"
-                class="form-control modern-input"
-                placeholder="Introduce tu email"
-            >
+            <input type="email" name="email" value="{{ user.email }}" class="form-control modern-input"
+                placeholder="Introduce tu email" readonly>
 
         </div>
 
@@ -74,16 +64,24 @@
 
         <div class="mb-4">
 
+            <div class="mb-4">
+
+                <label class="form-label">
+
+                    Contraseña actual
+
+                </label>
+
+                <input type="password" name="current_password" class="form-control modern-input">
+
+            </div>
+
             <label class="form-label">
                 Nueva contraseña
             </label>
 
-            <input
-                type="password"
-                name="password"
-                class="form-control modern-input"
-                placeholder="Dejar vacío para mantener la actual"
-            >
+            <input type="password" name="password" class="form-control modern-input"
+                placeholder="Dejar vacío para mantener la actual">
 
         </div>
 
@@ -110,5 +108,28 @@
     </form>
 
 </div>
+
+<script>
+
+    const passwordInput =
+        document.querySelector('input[name="password"]');
+
+    const currentPasswordInput =
+        document.querySelector('input[name="current_password"]');
+
+    passwordInput.addEventListener("input", function () {
+
+        if (passwordInput.value.trim() !== "") {
+
+            currentPasswordInput.required = true;
+        }
+
+        else {
+
+            currentPasswordInput.required = false;
+        }
+    });
+
+</script>
 
 {% endblock %}

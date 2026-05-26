@@ -30,128 +30,132 @@
     </button>
 </div>
 
-<div class="table-container">
+<div class="table-responsive">
 
-    <table class="modern-table">
+    <div class="table-container">
 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Dirección</th>
-                <th>Tipo</th>
-                <th>Descripción</th>
-                <th>Recurso</th>
-                <th>Inicio</th>
-                <th>Fin</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
+        <table class="modern-table">
 
-        <tbody>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Dirección</th>
+                    <th>Tipo</th>
+                    <th>Descripción</th>
+                    <th>Recurso</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
 
-            {% for incident in incidents %}
-            <tr data-estado="{{ 'activa' if not incident.end_date else 'finalizada' }}">
+            <tbody>
 
-                <td>{{ incident.id }}</td>
-                <td>{{ incident.address }}</td>
-                <td>{{ incident.incident_type.name }}</td>
-                <td title="{{ incident.incidence }}">{{ incident.incidence[:30] }}{% if incident.incidence|length > 30
-                    %}...{% endif %}</td>
-                <td>
+                {% for incident in incidents %}
+                <tr data-estado="{{ 'activa' if not incident.end_date else 'finalizada' }}">
 
-                    {% if incident.resources %}
+                    <td>{{ incident.id }}</td>
+                    <td>{{ incident.address }}</td>
+                    <td>{{ incident.incident_type.name }}</td>
+                    <td title="{{ incident.incidence }}">{{ incident.incidence[:30] }}{% if incident.incidence|length >
+                        30
+                        %}...{% endif %}</td>
+                    <td>
 
-                    {% for resource in incident.resources %}
+                        {% if incident.resources %}
 
-                    <span class="resource-badge">
+                        {% for resource in incident.resources %}
 
-                        {{ resource.name }}
+                        <span class="resource-badge">
 
-                    </span>
+                            {{ resource.name }}
 
-                    {% endfor %}
+                        </span>
 
-                    {% else %}
+                        {% endfor %}
 
-                    <span class="text-muted">
-                        Sin asignar
-                    </span>
+                        {% else %}
 
-                    {% endif %}
+                        <span class="text-muted">
+                            Sin asignar
+                        </span>
 
-                </td>
-                <td>
+                        {% endif %}
 
-                    {{ incident.start_date.strftime('%d/%m/%Y') }}
+                    </td>
+                    <td>
 
-                    <br>
+                        {{ incident.start_date.strftime('%d/%m/%Y') }}
 
-                    <small class="text-muted">
+                        <br>
 
-                        {{ incident.start_date.strftime('%H:%M') }}
+                        <small class="text-muted">
 
-                    </small>
+                            {{ incident.start_date.strftime('%H:%M') }}
 
-                </td>
+                        </small>
 
-                <td>
+                    </td>
 
-                    {% if incident.end_date %}
+                    <td>
 
-                    {{ incident.end_date.strftime('%d/%m/%Y') }}
+                        {% if incident.end_date %}
 
-                    <br>
+                        {{ incident.end_date.strftime('%d/%m/%Y') }}
 
-                    <small class="text-muted">
+                        <br>
 
-                        {{ incident.end_date.strftime('%H:%M') }}
+                        <small class="text-muted">
 
-                    </small>
+                            {{ incident.end_date.strftime('%H:%M') }}
 
-                    {% else %}
+                        </small>
 
-                    -
+                        {% else %}
 
-                    {% endif %}
+                        -
 
-                </td>
+                        {% endif %}
 
-                <td>
-                    {% if incident.end_date %}
-                    <span class="badge bg-success">Finalizada</span>
-                    {% else %}
-                    <span class="badge bg-danger">Activa</span>
-                    {% endif %}
-                </td>
+                    </td>
 
-                <td>
+                    <td>
+                        {% if incident.end_date %}
+                        <span class="badge bg-success">Finalizada</span>
+                        {% else %}
+                        <span class="badge bg-danger">Activa</span>
+                        {% endif %}
+                    </td>
 
-                    {% if not incident.end_date %}
+                    <td>
 
-                    <a href="/incidents/manage/{{ incident.id }}" class="table-action-btn warning-btn">
-                        <i class="bi bi-tools"></i>
-                        Gestionar
-                    </a>
+                        {% if not incident.end_date %}
 
-                    {% else %}
+                        <a href="/incidents/manage/{{ incident.id }}" class="table-action-btn warning-btn">
+                            <i class="bi bi-tools"></i>
+                            Gestionar
+                        </a>
 
-                    <a href="/incidents/view/{{ incident.id }}" class="table-action-btn info-btn">
-                        <i class="bi bi-eye"></i>
-                        Ver
-                    </a>
+                        {% else %}
 
-                    {% endif %}
+                        <a href="/incidents/view/{{ incident.id }}" class="table-action-btn info-btn">
+                            <i class="bi bi-eye"></i>
+                            Ver
+                        </a>
 
-                </td>
+                        {% endif %}
 
-            </tr>
-            {% endfor %}
+                    </td>
 
-        </tbody>
+                </tr>
+                {% endfor %}
 
-    </table>
+            </tbody>
 
+        </table>
+
+    </div>
 </div>
 
 {% endblock %}
