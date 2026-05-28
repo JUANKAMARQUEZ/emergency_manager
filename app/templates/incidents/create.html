@@ -91,7 +91,7 @@
         </div>
 
         <!-- RECURSOS SUGERIDOS -->
-         
+
         {% if main_resource %}
 
         <div class="alert alert-info mt-4">
@@ -186,8 +186,15 @@
         var address = document.getElementById("address").value;
 
         // Limitar a Sevilla
-        var url = "https://nominatim.openstreetmap.org/search?format=json&q="
-            + address + ", Sevilla, España";
+        var url =
+            "https://nominatim.openstreetmap.org/search?" +
+            "format=json" +
+            "&limit=1" +
+            "&countrycodes=es" +
+            "&q=" + encodeURIComponent(
+                address + ", Sevilla capital, Andalucía, España"
+            );
+
 
         fetch(url)
             .then(response => response.json())
