@@ -151,7 +151,7 @@ def edit_user(id):
                 "warning"
             )
 
-        return redirect("/profile")
+            return redirect("/profile")
 
         # 📧 comprobar email duplicado
         existing_user = User.query.filter_by(email=request.form["email"]).first()
