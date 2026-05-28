@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 from math import radians, cos, sin, sqrt, atan2
 from app.models import Incident, IncidentType, Resource
 from app.extensions import db
-from datetime import datetime, timedelta
+from datetime import datetime
 
 incident_bp = Blueprint("incident", __name__)
 
@@ -165,7 +165,7 @@ def create_incident():
             latitude=latitude,
             longitude=longitude,
             incidence=incidence,
-            start_date=datetime.utcnow() + timedelta(hours=2),
+            start_date=datetime.now(),
             user_id=current_user.id,
             incidentType_id=incident_type_id,
         )
@@ -335,7 +335,7 @@ def manage_incident(id):
 
                 return redirect(request.url)
 
-            incident.end_date = datetime.utcnow() + timedelta(hours=2)
+            incident.end_date = datetime.now()
 
         db.session.commit()
 
