@@ -2,13 +2,10 @@ from email.mime import message
 
 from flask import Blueprint, render_template, request, redirect, flash
 from flask_login import login_required, current_user
-from datetime import datetime
 from math import radians, cos, sin, sqrt, atan2
-
 from app.models import Incident, IncidentType, Resource
 from app.extensions import db
-from zoneinfo import ZoneInfo
-
+from datetime import datetime, timedelta
 
 incident_bp = Blueprint("incident", __name__)
 
@@ -168,7 +165,7 @@ def create_incident():
             latitude=latitude,
             longitude=longitude,
             incidence=incidence,
-            start_date=datetime.now(ZoneInfo("Europe/Madrid")),
+            start_date=datetime.utcnow() + timedelta(hours=2),
             user_id=current_user.id,
             incidentType_id=incident_type_id,
         )
@@ -338,7 +335,7 @@ def manage_incident(id):
 
                 return redirect(request.url)
 
-            incident.end_date = datetime.now(ZoneInfo("Europe/Madrid"))
+            incident.end_date = datetime.utcnow() + timedelta(hours=2)
 
         db.session.commit()
 
