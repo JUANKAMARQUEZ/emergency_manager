@@ -7,6 +7,8 @@ from math import radians, cos, sin, sqrt, atan2
 
 from app.models import Incident, IncidentType, Resource
 from app.extensions import db
+from zoneinfo import ZoneInfo
+
 
 incident_bp = Blueprint("incident", __name__)
 
@@ -166,7 +168,7 @@ def create_incident():
             latitude=latitude,
             longitude=longitude,
             incidence=incidence,
-            start_date=datetime.now(),
+            start_date=datetime.now(ZoneInfo("Europe/Madrid")),
             user_id=current_user.id,
             incidentType_id=incident_type_id,
         )
@@ -336,7 +338,7 @@ def manage_incident(id):
 
                 return redirect(request.url)
 
-            incident.end_date = datetime.now()
+            incident.end_date = datetime.now(ZoneInfo("Europe/Madrid"))
 
         db.session.commit()
 
