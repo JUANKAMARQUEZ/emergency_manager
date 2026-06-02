@@ -895,3 +895,22 @@ RESPONSIVE
     }
 }
 
+/* BOTÓN HABILITAR USUARIO */
+
+.success-btn {
+
+    background-color: #198754;
+
+    color: white;
+
+    border: none;
+
+}
+
+.success-btn:hover {
+
+    background-color: #157347;
+
+    color: white;
+}
+

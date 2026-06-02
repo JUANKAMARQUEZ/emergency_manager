@@ -21,14 +21,17 @@ def login():
 
         user = User.query.filter_by(email=email).first()
 
-        # 🔐 comprobar hash
-        if user and check_password_hash(user.password, password):
+        # 🔐 comprobar hash y estado de usuario
+        if user and user.active and check_password_hash(user.password, password):
 
             login_user(user)
 
             next_page = request.args.get("next")
 
             return redirect(next_page or "/dashboard")
+        
+        elif user and not user.active:
+            flash("Usuario inhabilitado", "danger")
 
         else:
 

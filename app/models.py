@@ -25,15 +25,15 @@ class User(db.Model, UserMixin):
 
     password = db.Column(db.String(255))
 
-    role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    active = db.Column(
+        db.Boolean, default=True, nullable=False, server_default=db.text("true")
+    )
+
+    role_id = db.Column(db.Integer, db.ForeignKey("role.id"))
 
     role = db.relationship("Role")
 
-    incidents = db.relationship(
-    "Incident",
-    back_populates="user",
-    lazy=True
-    )
+    incidents = db.relationship("Incident", back_populates="user", lazy=True)
 
 
 # -----------------------------
@@ -59,27 +59,17 @@ class IncidentType(db.Model):
 
     name = db.Column(db.String(100))
 
+
 # -----------------------------
 # RELACIÓN INCIDENTES-RECURSOS
 # -----------------------------
 
 incident_resource = db.Table(
-
     "incident_resource",
-
-    db.Column(
-        "incident_id",
-        db.Integer,
-        db.ForeignKey("incident.id")
-    ),
-
-    db.Column(
-        "resource_id",
-        db.Integer,
-        db.ForeignKey("resource.id")
-    )
-
+    db.Column("incident_id", db.Integer, db.ForeignKey("incident.id")),
+    db.Column("resource_id", db.Integer, db.ForeignKey("resource.id")),
 )
+
 
 # -----------------------------
 # INCIDENCIAS
@@ -102,28 +92,19 @@ class Incident(db.Model):
 
     observations = db.Column(db.Text)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
-    incidentType_id = db.Column(db.Integer, db.ForeignKey('incident_type.id'))
-
-    
+    incidentType_id = db.Column(db.Integer, db.ForeignKey("incident_type.id"))
 
     # Relaciones
 
-    user = db.relationship(
-    "User",
-    back_populates="incidents"
-    )
+    user = db.relationship("User", back_populates="incidents")
 
     incident_type = db.relationship("IncidentType")
 
     resources = db.relationship(
-        "Resource",
-        secondary=incident_resource,
-        backref="incidents"
+        "Resource", secondary=incident_resource, backref="incidents"
     )
-
-    
 
 
 # -----------------------------

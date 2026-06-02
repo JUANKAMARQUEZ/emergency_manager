@@ -50,6 +50,7 @@
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Rol</th>
+                <th>Estado</th>
                 <th>Acciones</th>
 
             </tr>
@@ -103,6 +104,27 @@
                     {% endif %}
 
                 </td>
+                <td>
+
+                    {% if user.active %}
+
+                    <span class="badge bg-success">
+
+                        Activo
+
+                    </span>
+
+                    {% else %}
+
+                    <span class="badge bg-danger">
+
+                        Inhabilitado
+
+                    </span>
+
+                    {% endif %}
+
+                </td>
 
                 <td>
 
@@ -110,10 +132,7 @@
 
                         <!-- EDITAR -->
 
-                        <a
-                            href="/users/edit/{{ user.id }}"
-                            class="table-action-btn warning-btn"
-                        >
+                        <a href="/users/edit/{{ user.id }}" class="table-action-btn warning-btn">
 
                             <i class="bi bi-pencil-square"></i>
 
@@ -121,17 +140,19 @@
 
                         </a>
 
-                        <!-- ELIMINAR -->
+                        <!-- INHABILITAR/HABILITAR -->
 
-                        <a
-                            href="/users/delete/{{ user.id }}"
-                            class="table-action-btn danger-btn"
-                            onclick="return confirm('¿Seguro que quieres eliminar este usuario?')"
-                        >
+                        <a href="/users/delete/{{ user.id }}"
+                            class="table-action-btn {% if user.active %}danger-btn{% else %}success-btn{% endif %}"
+                            onclick="return confirm('{% if user.active %}¿Seguro que quieres inhabilitar este usuario?{% else %}¿Seguro que quieres habilitar este usuario?                        {% endif %}')">
 
-                            <i class="bi bi-trash"></i>
+                            <i class="bi {% if user.active %}bi-person-x{% else %}bi-person-check{% endif %}"></i>
 
-                            Eliminar
+                            {% if user.active %}
+                            Inhabilitar
+                            {% else %}
+                            Habilitar
+                            {% endif %}
 
                         </a>
 

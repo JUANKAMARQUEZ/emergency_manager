@@ -22,7 +22,7 @@ def profile():
     if request.method == "POST":
 
         user.name = request.form["name"]
-       
+
         # 🔐 cambiar contraseña si se introduce
         if request.form["password"]:
 
@@ -146,10 +146,7 @@ def edit_user(id):
 
         if int(user.id) == int(current_user.id):
 
-            flash(
-             "  Debes cambiar tu contraseña desde Mi perfil",
-                "warning"
-            )
+            flash("  Debes cambiar tu contraseña desde Mi perfil", "warning")
 
             return redirect("/profile")
 
@@ -205,34 +202,36 @@ def delete_user(id):
     if not user:
         return redirect("/users")
 
-    # ❌ evitar autoeliminación
+    # ❌ evitar que el administrador inhabilite su propio usuario
     if int(user.id) == int(current_user.id):
 
-        flash("No puedes eliminar tu propio usuario", "danger")
+        flash("No puedes inhabilitar tu propio usuario", "danger")
 
         return redirect("/users")
 
-    # ❌ evitar eliminar último administrador
-    if user.role.name == "administrador":
+    # ❌ evitar inhabilitar último administrador
+    if user.role.name == "administrador" and user.active:
 
-        admins = User.query.filter_by(role_id=user.role_id).all()
+        admins = User.query.filter_by(role_id=user.role_id, active=True).all()
 
         if len(admins) <= 1:
 
-            flash("No puedes eliminar el último administrador", "danger")
+            flash("No puedes inhabilitar el último administrador", "danger")
 
             return redirect("/users")
 
-    # ❌ evitar eliminar usuarios con incidencias
-    if user.incidents:
+    # Cambiar estado usuario
+    user.active = not user.active
 
-        flash("No puedes eliminar un usuario con incidencias asociadas", "danger")
-
-        return redirect("/users")
-
-    db.session.delete(user)
     db.session.commit()
 
-    flash("Usuario eliminado correctamente", "success")
+    # Mensaje dinámico
+    if user.active:
+
+        flash("Usuario habilitado correctamente", "success")
+
+    else:
+
+        flash("Usuario inhabilitado correctamente", "warning")
 
     return redirect("/users")
