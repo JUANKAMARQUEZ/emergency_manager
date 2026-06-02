@@ -814,9 +814,9 @@ RESPONSIVE
 
     .logo-navbar {
 
-        width: 42px;
+        width: 60px;
 
-        height: 42px;
+        height: auto;
     }
 
     .custom-navbar .d-flex.align-items-center.gap-3 {
