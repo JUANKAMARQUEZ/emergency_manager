@@ -143,8 +143,8 @@
 }
 
 .logo-navbar {
-    width: 58px;
-    height: 58px;
+    width: 64px;
+    height: auto;
     object-fit: contain;
 }
 
@@ -814,7 +814,7 @@ RESPONSIVE
 
     .logo-navbar {
 
-        width: 60px;
+        width: 70px;
 
         height: auto;
     }
