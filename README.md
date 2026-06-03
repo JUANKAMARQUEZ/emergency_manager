@@ -21,10 +21,14 @@ Este proyecto ha sido desarrollado como Trabajo Fin de Grado (TFG) del ciclo Des
 * Inicio y cierre de sesión
 * Roles de usuario y administrador
 * Gestión completa de usuarios
+* Sistema de inhabilitación lógica de usuarios
+* Rehabilitación de usuarios inhabilitados
 * Contraseñas cifradas mediante PBKDF2
 * Validación de contraseña actual para cambios personales
 * Protección contra eliminación del último administrador
 * Protección contra autoeliminación
+* Bloqueo de acceso de usuarios inhabilitados
+* Preservación de trazabilidad histórica mediante inhabilitación lógica
 
 ---
 
@@ -246,7 +250,14 @@ pip install -r requirements.txt
 
 ---
 
-## 6️⃣ Ejecutar aplicación
+## 6️⃣ Actualizar estructura de la base de datos
+
+```bash
+flask db upgrade
+```
+---
+
+## 7️⃣ Ejecutar aplicación
 
 ```bash
 python run.py
@@ -261,6 +272,20 @@ La aplicación está preparada para despliegue en:
 * Render
 * PostgreSQL
 * Gunicorn
+
+La aplicación se encuentra desplegada en producción mediante Render utilizando PostgreSQL como base de datos cloud.
+
+---
+
+## 🌐 Aplicación en producción
+
+https://emergency-manager.onrender.com/
+
+---
+
+## 🔗 Repositorio GitHub
+
+https://github.com/JUANKAMARQUEZ/emergency_manager
 
 ---
 
