@@ -185,14 +185,14 @@ def edit_user(id):
     return render_template("user_form.html", user=user, roles=roles)
 
 
-# -------------------------
-# ELIMINAR USUARIO
-# -------------------------
+# -----------------------------------------
+# ELIMINAR USUARIO (EN REALIDAD INHABILITAR)
+# -----------------------------------------
 
 
-@user_bp.route("/users/delete/<int:id>")
+@user_bp.route("/users/toggle/<int:id>")
 @login_required
-def delete_user(id):
+def toggle_user(id):
 
     if current_user.role.name != "administrador":
         return redirect("/dashboard")

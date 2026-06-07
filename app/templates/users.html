@@ -142,7 +142,7 @@
 
                         <!-- INHABILITAR/HABILITAR -->
 
-                        <a href="/users/delete/{{ user.id }}"
+                        <a href="/users/toggle/{{ user.id }}"
                             class="table-action-btn {% if user.active %}danger-btn{% else %}success-btn{% endif %}"
                             onclick="return confirm('{% if user.active %}¿Seguro que quieres inhabilitar este usuario?{% else %}¿Seguro que quieres habilitar este usuario?                        {% endif %}')">
 
