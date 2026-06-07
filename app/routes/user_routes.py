@@ -186,7 +186,7 @@ def edit_user(id):
 
 
 # -----------------------------------------
-# ELIMINAR USUARIO (EN REALIDAD INHABILITAR)
+# INHABILITAR/HABILITAR USUARIO
 # -----------------------------------------
 
 
