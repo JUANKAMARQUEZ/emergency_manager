@@ -9,10 +9,7 @@
     <!-- PANEL IZQUIERDO -->
     <div class="login-left">
 
-        <img
-            src="{{ url_for('static', filename='img/logo.png') }}"
-            class="login-logo"
-        >
+        <img src="{{ url_for('static', filename='img/logo.png') }}" class="login-logo">
 
         <h1 class="login-title">
             Gestor de Emergencias
@@ -40,13 +37,8 @@
                     Email
                 </label>
 
-                <input
-                    type="email"
-                    name="email"
-                    class="form-control modern-input"
-                    value="{{ request.form.email }}"
-                    required
-                >
+                <input type="email" name="email" class="form-control modern-input" value="{{ request.form.email }}"
+                    required>
 
             </div>
 
@@ -56,12 +48,7 @@
                     Contraseña
                 </label>
 
-                <input
-                    type="password"
-                    name="password"
-                    class="form-control modern-input"
-                    required
-                >
+                <input type="password" name="password" class="form-control modern-input" required>
 
             </div>
 
