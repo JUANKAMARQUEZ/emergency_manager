@@ -123,6 +123,16 @@ def create_incident():
 
         longitude = request.form["longitude"]
 
+        # Validar que se han obtenido coordenadas válidas
+        if not latitude or not longitude:
+
+            flash(
+                 "Debes buscar una dirección válida antes de crear la incidencia",
+                 "danger"
+            )
+
+            return redirect("/incidents/create")
+
         incidence = request.form["incidence"]
 
         incident_type_id = request.form["incident_type"]
