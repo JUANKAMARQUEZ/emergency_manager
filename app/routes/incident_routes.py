@@ -124,10 +124,9 @@ def create_incident():
         longitude = request.form["longitude"]
 
         # Validar que se han obtenido coordenadas válidas
-        if not latitude or not longitude:
-
+        if not latitude.strip() or not longitude.strip():
             flash(
-                 "Debes buscar una dirección válida antes de crear la incidencia",
+                 "Debes pulsar 'Buscar dirección' antes de crear la incidencia",
                  "danger"
             )
 
