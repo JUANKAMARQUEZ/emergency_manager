@@ -1,7 +1,7 @@
 
 from flask import Flask
 from config import Config
-from .extensions import db, login_manager, migrate
+from .extensions import db, login_manager
 
 
 def create_app():
@@ -18,8 +18,7 @@ def create_app():
 
     login_manager.init_app(app)
 
-    migrate.init_app(app, db)
-
+    
     from . import models
 
     # Registrar rutas
@@ -42,9 +41,9 @@ def create_app():
 
         from werkzeug.security import generate_password_hash
 
-        # Crear tablas
+        # crear tablas
         db.create_all()
-
+        
         # Inicializar solo si está vacío
         if not Role.query.first():
 
